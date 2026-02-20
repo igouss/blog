@@ -59,5 +59,18 @@ Markdown files are the single source of truth — write a `.md` file and it's im
 | Static Markdown files over CMS | Simplicity, version-controllable, editor-agnostic | — Pending |
 | Terraform for Tailscale config | Reproducible, declarative CNAME management | — Pending |
 
+## Current Milestone: v1.0 Core Infrastructure
+
+**Goal:** Get the blog fully deployed and accessible — Caddy serving Markdown as HTML, Tailscale Funnel active, CNAME configured via Terraform.
+
+**Target features:**
+- Caddyfile with content negotiation (HTML to browsers, raw Markdown to `Accept: text/markdown` clients)
+- Tailscale Funnel configuration exposing the blog publicly
+- Terraform config managing the `blog.mist-walleye.ts.net` CNAME
+- HTML template with clean blog layout
+- Basic CSS styling
+- Sample article to validate the pipeline end-to-end
+- Repository directory structure (articles/, templates/, css/, scripts/, configs/)
+
 ---
-*Last updated: 2026-02-20 after initialization*
+*Last updated: 2026-02-20 after milestone v1.0 started*

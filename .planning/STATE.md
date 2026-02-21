@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 1 of 4 (Infrastructure)
-Plan: 1 of 3 completed in current phase
+Plan: 2 of 3 completed in current phase
 Status: In Progress
-Last activity: 2026-02-21 — Completed 01-01 (blog layout, Caddyfile, tailscaled cert permission)
+Last activity: 2026-02-21 — Completed 01-02 (Caddyfile plain HTTP :8080, Caddy started as user)
 
-Progress: [█░░░░░░░░░] 8% (1 of 12 total plans)
+Progress: [██░░░░░░░░] 17% (2 of 12 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 15 min
-- Total execution time: 15 min
+- Total plans completed: 2
+- Average duration: 10 min
+- Total execution time: 20 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-infrastructure | 1/3 | 15 min | 15 min |
+| 01-infrastructure | 2/3 | 20 min | 10 min |
 
 **Recent Trend:**
-- Last 5 plans: 15 min
-- Trend: baseline
+- Last 5 plans: 15 min, 5 min
+- Trend: faster
 
 *Updated after each plan completion*
 
@@ -50,6 +50,8 @@ Recent decisions affecting current work:
 - [Phase 01-infrastructure]: fedora.mist-walleye.ts.net used as Caddy site address (no CNAME available for blog.mist-walleye.ts.net)
 - [Phase 01-infrastructure]: World-readable permissions (a+rX) on blog repo so caddy can serve files without ownership changes
 - [Phase 01-infrastructure]: Phase 1 Caddyfile minimal (no template/rewrite) — content negotiation added in Phase 2
+- [Phase 01-infrastructure]: Plain HTTP :8080 in Caddy — Tailscale Funnel terminates TLS (--https=443 mode) and proxies to localhost:8080
+- [Phase 01-infrastructure]: caddy start (user daemon, not systemd) — sufficient for current setup; no service unit needed
 
 ### Pending Todos
 
@@ -58,10 +60,10 @@ None yet.
 ### Blockers/Concerns
 
 - [RESOLVED 01-01]: Tailscale MagicDNS CNAME — using `fedora.mist-walleye.ts.net` directly (locked in Caddyfile)
-- [Deferred]: SELinux may block Caddy on Fedora — if Caddy returns 403 after Plan 02 starts service, apply: `sudo semanage fcontext -a -t httpd_sys_content_t "/home/elendal/IdeaProjects/blog(/.*)?" && sudo restorecon -Rv /home/elendal/IdeaProjects/blog`
+- [RESOLVED 01-02]: SELinux did not block Caddy — HTTP 200 confirmed without semanage fix. World-readable permissions sufficient.
 
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 01-01-PLAN.md (blog layout, Caddyfile, tailscaled cert permission); ready for 01-02
+Stopped at: Completed 01-02-PLAN.md (Caddyfile plain HTTP :8080, Caddy running as user); ready for 01-03
 Resume file: None

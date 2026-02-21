@@ -28,7 +28,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Caddy serves HTTPS using a `*.ts.net` certificate issued by Tailscale (no browser TLS warning)
   3. Tailscale Funnel is active and routing public internet traffic to Caddy on port 443
   4. A browser outside the tailnet can load the blog URL and receive an HTTP 200 response over HTTPS
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Host setup: /srv/blog directory layout + TS_PERMIT_CERT_UID tailscaled config
+- [ ] 01-02-PLAN.md — Caddy TLS config: Caddyfile symlink + enable Caddy HTTPS with Tailscale cert
+- [ ] 01-03-PLAN.md — Funnel + external verify: enable Tailscale Funnel + human checkpoint for public HTTPS
 
 ### Phase 2: Rendering Pipeline
 **Goal**: Markdown files are served as rendered HTML to browsers and as raw Markdown to API clients
@@ -70,7 +75,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Infrastructure | 0/TBD | Not started | - |
+| 1. Infrastructure | 0/3 | Not started | - |
 | 2. Rendering Pipeline | 0/TBD | Not started | - |
 | 3. Styling and Metadata | 0/TBD | Not started | - |
 | 4. Sample Content | 0/TBD | Not started | - |

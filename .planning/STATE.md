@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 1 of 4 (Infrastructure)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-02-21 — Roadmap created, ready to begin Phase 1 planning
+Plan: 1 of 3 completed in current phase
+Status: In Progress
+Last activity: 2026-02-21 — Completed 01-01 (blog layout, Caddyfile, tailscaled cert permission)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 8% (1 of 12 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: —
-- Total execution time: —
+- Total plans completed: 1
+- Average duration: 15 min
+- Total execution time: 15 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-infrastructure | 1/3 | 15 min | 15 min |
 
 **Recent Trend:**
-- Last 5 plans: —
-- Trend: —
+- Last 5 plans: 15 min
+- Trend: baseline
 
 *Updated after each plan completion*
 
@@ -47,6 +47,9 @@ Recent decisions affecting current work:
 - [Research]: `tailscale funnel` (not `tailscale serve`) for public internet exposure
 - [Research]: `TS_PERMIT_CERT_UID=caddy` required in `/etc/default/tailscaled` before Caddy can fetch TLS cert
 - [Research]: CNAME `blog.mist-walleye.ts.net` cannot be created via Terraform — use machine hostname or manual admin console alias
+- [Phase 01-infrastructure]: fedora.mist-walleye.ts.net used as Caddy site address (no CNAME available for blog.mist-walleye.ts.net)
+- [Phase 01-infrastructure]: World-readable permissions (a+rX) on blog repo so caddy can serve files without ownership changes
+- [Phase 01-infrastructure]: Phase 1 Caddyfile minimal (no template/rewrite) — content negotiation added in Phase 2
 
 ### Pending Todos
 
@@ -54,11 +57,11 @@ None yet.
 
 ### Blockers/Concerns
 
-- [Research]: Tailscale MagicDNS CNAME limitation (issue #1543 open since 2021) — use `fedora.mist-walleye.ts.net` directly or create device alias manually via Tailscale admin console. Resolve before Phase 1 Caddyfile site address is set.
-- [Research]: SELinux may block Caddy on Fedora — store blog files under `/srv/blog` or apply `semanage fcontext` labels if 403/500 errors appear despite correct Unix permissions.
+- [RESOLVED 01-01]: Tailscale MagicDNS CNAME — using `fedora.mist-walleye.ts.net` directly (locked in Caddyfile)
+- [Deferred]: SELinux may block Caddy on Fedora — if Caddy returns 403 after Plan 02 starts service, apply: `sudo semanage fcontext -a -t httpd_sys_content_t "/home/elendal/IdeaProjects/blog(/.*)?" && sudo restorecon -Rv /home/elendal/IdeaProjects/blog`
 
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Roadmap written; REQUIREMENTS.md traceability updated; ready for `/gsd:plan-phase 1`
+Stopped at: Completed 01-01-PLAN.md (blog layout, Caddyfile, tailscaled cert permission); ready for 01-02
 Resume file: None

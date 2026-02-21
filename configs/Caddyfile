@@ -1,5 +1,5 @@
 :8080 {
-    root * /home/elendal/IdeaProjects/blog
+	root * /home/elendal/IdeaProjects/blog
 
-    file_server
+	file_server
 }

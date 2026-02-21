@@ -1,0 +1,9 @@
+fedora.mist-walleye.ts.net {
+    root * /home/elendal/IdeaProjects/blog
+
+    file_server
+
+    tls {
+        get_certificate tailscale
+    }
+}

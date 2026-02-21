@@ -12,7 +12,7 @@ Four phases that track the natural dependency chain: get public HTTPS working fi
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Infrastructure** - Caddy + Tailscale Funnel + HTTPS end-to-end, accessible from public internet
+- [x] **Phase 1: Infrastructure** - Caddy + Tailscale Funnel + HTTPS end-to-end, accessible from public internet
 - [ ] **Phase 2: Rendering Pipeline** - Caddyfile content negotiation, Go HTML template, Markdown-to-HTML serving
 - [ ] **Phase 3: Styling and Metadata** - Clean layout, mobile CSS, back navigation, Open Graph tags
 - [ ] **Phase 4: Sample Content** - Index page and sample article validating the full pipeline
@@ -31,9 +31,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Host setup: /srv/blog directory layout + TS_PERMIT_CERT_UID tailscaled config
-- [ ] 01-02-PLAN.md — Caddy TLS config: Caddyfile symlink + enable Caddy HTTPS with Tailscale cert
-- [ ] 01-03-PLAN.md — Funnel + external verify: enable Tailscale Funnel + human checkpoint for public HTTPS
+- [x] 01-01-PLAN.md — Host setup: /srv/blog directory layout + TS_PERMIT_CERT_UID tailscaled config
+- [x] 01-02-PLAN.md — Caddy TLS config: Caddyfile symlink + enable Caddy HTTPS with Tailscale cert
+- [x] 01-03-PLAN.md — Funnel + external verify: enable Tailscale Funnel + human checkpoint for public HTTPS
 
 ### Phase 2: Rendering Pipeline
 **Goal**: Markdown files are served as rendered HTML to browsers and as raw Markdown to API clients
@@ -75,7 +75,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Infrastructure | 2/3 | In Progress|  |
+| 1. Infrastructure | 3/3 | Complete | 2026-02-21 |
 | 2. Rendering Pipeline | 0/TBD | Not started | - |
 | 3. Styling and Metadata | 0/TBD | Not started | - |
 | 4. Sample Content | 0/TBD | Not started | - |

@@ -12,8 +12,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **INFRA-01**: Blog files are organized in a structured directory layout (`articles/`, `templates/`, `css/`, `scripts/`, `configs/`)
 - [x] **INFRA-02**: Tailscale daemon is permitted to issue TLS certs to the Caddy user (`TS_PERMIT_CERT_UID=caddy` in `/etc/default/tailscaled`)
 - [x] **INFRA-03**: Caddy serves the blog over HTTPS using a Tailscale-issued `*.ts.net` TLS certificate (`get_certificate tailscale`)
-- [ ] **INFRA-04**: Tailscale Funnel exposes the blog to the public internet on HTTPS port 443
-- [ ] **INFRA-05**: Blog is accessible from an external browser (outside the tailnet) over HTTPS
+- [x] **INFRA-04**: Tailscale Funnel exposes the blog to the public internet on HTTPS port 443
+- [x] **INFRA-05**: Blog is accessible from an external browser (outside the tailnet) over HTTPS
 
 ### Rendering
 
@@ -80,8 +80,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-01 | Phase 1 | Complete |
 | INFRA-02 | Phase 1 | Complete |
 | INFRA-03 | Phase 1 | Complete |
-| INFRA-04 | Phase 1 | Pending |
-| INFRA-05 | Phase 1 | Pending |
+| INFRA-04 | Phase 1 | Complete |
+| INFRA-05 | Phase 1 | Complete |
 | REND-01 | Phase 2 | Pending |
 | REND-02 | Phase 2 | Pending |
 | REND-03 | Phase 2 | Pending |

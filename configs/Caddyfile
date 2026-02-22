@@ -1,6 +1,11 @@
 :8080 {
 	root * /home/elendal/IdeaProjects/blog
 
+	log {
+		output file /var/log/caddy/access.log
+		format json
+	}
+
 	# Named matchers
 	@articleSlug path_regexp article ^/articles/([^/]+)$
 	@articleIndex path /articles/ /articles

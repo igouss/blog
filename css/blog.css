@@ -1,0 +1,297 @@
+/* SARA Design Language — Blog Reading Layout
+ * Warm, intimate, reading-focused personal blog
+ * Font: Nunito 300/400/600 | Base: 18px | Line-height: 1.8
+ */
+
+/* ============================================================
+   CSS Custom Properties — Light Mode (default)
+   ============================================================ */
+:root {
+  /* Backgrounds */
+  --bg-primary: #faf8f5;
+  --bg-secondary: #f0ebe4;
+
+  /* Text */
+  --text-primary: #5a534a;
+  --text-secondary: #7a6f63;
+  --text-tertiary: #9a8f82;
+
+  /* Accents */
+  --accent: #d4c4b0;
+  --accent-hover: #c4b4a0;
+
+  /* Shadows — warm brown base, never pure black */
+  --shadow-sm: 0 2px 8px rgba(90, 83, 74, 0.05);
+  --shadow-md: 0 4px 15px rgba(90, 83, 74, 0.08);
+
+  /* Border radius */
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ============================================================
+   Dark Mode — data-theme attribute (JS toggle)
+   Applied via JS writing data-theme="dark" to <html>
+   ============================================================ */
+[data-theme="dark"] {
+  --bg-primary: #2a2520;
+  --bg-secondary: #332e28;
+  --text-primary: #e8e0d5;
+  --text-secondary: #c4b8a8;
+  --text-tertiary: #9a8f82;
+  --accent: #6b5e4e;
+  --accent-hover: #7a6d5c;
+  --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================
+   Dark Mode — System Preference
+   Activates before JS runs (no FOUC for system-dark users
+   who haven't explicitly chosen a theme)
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-primary: #2a2520;
+    --bg-secondary: #332e28;
+    --text-primary: #e8e0d5;
+    --text-secondary: #c4b8a8;
+    --text-tertiary: #9a8f82;
+    --accent: #6b5e4e;
+    --accent-hover: #7a6d5c;
+    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* ============================================================
+   Global Reset
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   Base — html & body
+   ============================================================ */
+html {
+  font-size: 18px;
+}
+
+body {
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.8;
+  min-height: 100vh;
+  transition: background 0.4s var(--ease-soft), color 0.4s var(--ease-soft);
+}
+
+/* ============================================================
+   Layout — Reading Column
+   ============================================================ */
+body > main {
+  max-width: 80ch;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+article {
+  width: 100%;
+}
+
+/* ============================================================
+   Navigation — Back Link
+   ============================================================ */
+.back-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  padding: 5px 10px;
+  border-radius: var(--radius-md);
+  margin-bottom: 25px;
+  display: block;
+  transition: all 0.3s var(--ease-soft);
+}
+
+.back-nav:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+/* ============================================================
+   Article Header
+   ============================================================ */
+article header {
+  margin-bottom: 40px;
+}
+
+article header h1 {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+article header time {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  letter-spacing: 2px;
+}
+
+/* ============================================================
+   Article Body Typography
+   ============================================================ */
+article p {
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+article h2,
+article h3,
+article h4 {
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  margin: 2rem 0 0.75rem;
+}
+
+article h2 {
+  font-size: 1.4rem;
+}
+
+article h3 {
+  font-size: 1.15rem;
+}
+
+article a {
+  color: var(--text-secondary);
+  text-underline-offset: 3px;
+  transition: color 0.3s;
+}
+
+article a:hover {
+  color: var(--text-primary);
+}
+
+article blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 20px;
+  margin: 1.5rem 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+article code {
+  background: var(--bg-secondary);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  color: var(--text-secondary);
+}
+
+article pre {
+  background: var(--bg-secondary);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  box-shadow: var(--shadow-sm);
+}
+
+article pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: inherit;
+}
+
+article ul,
+article ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+article li {
+  margin-bottom: 5px;
+}
+
+article hr {
+  border: none;
+  border-top: 1px solid var(--bg-secondary);
+  margin: 2rem 0;
+}
+
+/* ============================================================
+   Theme Toggle Button — Fixed Position
+   ============================================================ */
+#theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s var(--ease-soft);
+  color: var(--text-tertiary);
+}
+
+#theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(90, 83, 74, 0.15);
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   Mobile Responsive — 640px and below
+   ============================================================ */
+@media (max-width: 640px) {
+  body > main {
+    padding: 20px 15px;
+  }
+
+  article header h1 {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+
+  #theme-toggle {
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* ============================================================
+   Reduced Motion — Accessibility
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

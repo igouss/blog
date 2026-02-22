@@ -12,12 +12,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    (function() {
+      var saved = localStorage.getItem('blog-theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
   <title>{{$doc.Meta.title}}</title>
+  <meta property="og:title" content="{{$doc.Meta.title}}">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/blog.css">
   <link rel="stylesheet" href="/css/syntax.css">
 </head>
 <body>
   <main>
+    <a href="/" class="back-nav">← Back</a>
     <article>
       <header>
         <h1>{{$doc.Meta.title}}</h1>
@@ -26,5 +42,20 @@
       {{markdown $doc.Body}}
     </article>
   </main>
+  <button id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark mode">◐</button>
+  <script>
+    var btn = document.getElementById('theme-toggle');
+    function updateIcon() {
+      btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '◑' : '◐';
+    }
+    updateIcon();
+    btn.addEventListener('click', function() {
+      var current = document.documentElement.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('blog-theme', next);
+      updateIcon();
+    });
+  </script>
 </body>
 </html>

@@ -27,14 +27,14 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Styling
 
-- [ ] **STYL-01**: HTML template provides a clean blog layout with readable typography
-- [ ] **STYL-02**: Every post page includes a navigation link back to the blog index
-- [ ] **STYL-03**: CSS layout is mobile-responsive
+- [x] **STYL-01**: HTML template provides a clean blog layout with readable typography
+- [x] **STYL-02**: Every post page includes a navigation link back to the blog index
+- [x] **STYL-03**: CSS layout is mobile-responsive
 - [x] **STYL-04**: Templates directory is blocked from direct browser access (403)
 
 ### Metadata
 
-- [ ] **META-01**: Template includes Open Graph meta tags (`og:title`, `og:description`) populated from front matter
+- [x] **META-01**: Template includes Open Graph meta tags (`og:title`, `og:description`) populated from front matter
 
 ### Sample Content
 
@@ -90,10 +90,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REND-06 | Phase 2 | Complete |
 | REND-07 | Phase 2 | Complete |
 | STYL-04 | Phase 2 | Complete |
-| STYL-01 | Phase 3 | Pending |
-| STYL-02 | Phase 3 | Pending |
-| STYL-03 | Phase 3 | Pending |
-| META-01 | Phase 3 | Pending |
+| STYL-01 | Phase 3 | Complete |
+| STYL-02 | Phase 3 | Complete |
+| STYL-03 | Phase 3 | Complete |
+| META-01 | Phase 3 | Complete |
 | SAMP-01 | Phase 4 | Pending |
 | SAMP-02 | Phase 4 | Pending |
 

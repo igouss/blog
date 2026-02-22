@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Markdown files are the single source of truth — write a `.md` file and it's immediately accessible as a beautiful HTML page to browsers and as raw Markdown to API/CLI consumers.
-**Current focus:** Phase 3 (Styling and Metadata) — Phase 2 complete, ready for Phase 3
+**Current focus:** Phase 3 (Styling and Metadata) — Plan 01 complete, Plan 02 next
 
 ## Current Position
 
-Phase: 3 of 4 (Styling and Metadata) — READY TO START
-Plan: 0 of TBD completed in current phase
-Status: Phase 2 complete — all 5 success criteria verified on public URL; Phase 3 (Styling and Metadata) is next
-Last activity: 2026-02-22 — Completed 02-03 (Phase 2 end-to-end verification: human approval on fedora.mist-walleye.ts.net)
+Phase: 3 of 4 (Styling and Metadata) — IN PROGRESS
+Plan: 1 of 2 completed in current phase
+Status: 03-01 complete — SARA CSS + article.html updates (dark mode, og:title, back-nav, theme toggle)
+Last activity: 2026-02-22 — Completed 03-01 (SARA styling: css/blog.css + article.html)
 
-Progress: [██████░░░░] 50% (6 of 12 total plans)
+Progress: [███████░░░] 58% (7 of 12 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 6 min
-- Total execution time: 34 min
+- Total plans completed: 7
+- Average duration: 5 min
+- Total execution time: 36 min
 
 **By Phase:**
 
@@ -29,9 +29,10 @@ Progress: [██████░░░░] 50% (6 of 12 total plans)
 |-------|-------|-------|----------|
 | 01-infrastructure | 3/3 | 25 min | 8 min |
 | 02-rendering-pipeline | 3/3 | 9 min | 3 min |
+| 03-styling-and-metadata | 1/2 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 5 min, 5 min, 2 min, 2 min
+- Last 5 plans: 5 min, 2 min, 2 min, 2 min
 - Trend: fast
 
 *Updated after each plan completion*
@@ -63,6 +64,9 @@ Recent decisions affecting current work:
 - [Phase 02-rendering-pipeline 02-02]: YAML unquoted date values parse as time.Time → renders as "2026-02-21 00:00:00 +0000 UTC"; articles should quote date values or use a format helper in Phase 4
 - [Phase 02-rendering-pipeline 02-02]: css/blog.css linked from article.html now (returns 404 until Phase 3) — per design: link now, avoid rework later
 - [Phase 02-rendering-pipeline 02-03]: Phase 2 complete — all 5 success criteria verified on public URL; YAML unquoted date renders as "2026-02-21 00:00:00 +0000 UTC", needs format helper in Phase 4
+- [Phase 03-styling-and-metadata 03-01]: Dark mode uses [data-theme=dark] selector + prefers-color-scheme fallback — both JS toggle and system preference work without conflict
+- [Phase 03-styling-and-metadata 03-01]: Anti-FOUC IIFE placed after charset/viewport metas but before link tags — prevents theme flash on dark-preferring systems
+- [Phase 03-styling-and-metadata 03-01]: og:type: article added alongside og:title (trivially small addition per plan note)
 
 ### Pending Todos
 
@@ -77,5 +81,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 02-03-PLAN.md (Phase 2 end-to-end verification approved on public URL); Phase 2 done, ready for Phase 3 (Styling and Metadata)
+Stopped at: Completed 03-01-PLAN.md (SARA CSS + article.html: dark mode, og:title, back-nav, theme toggle); ready for 03-02
 Resume file: None

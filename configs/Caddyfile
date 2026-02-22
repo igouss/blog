@@ -1,5 +1,86 @@
 :8080 {
 	root * /home/elendal/IdeaProjects/blog
 
-	file_server
+	# Named matchers
+	@articleSlug path_regexp article ^/articles/([^/]+)$
+	@articleIndex path /articles/ /articles
+	@root path /
+
+	# Blog root — serves articles/index.md
+	handle @root {
+		header +Vary "Accept"
+		@rootMarkdown header Accept *text/markdown*
+		handle @rootMarkdown {
+			header Content-Type "text/markdown; charset=utf-8"
+			rewrite * /articles/index.md
+			file_server
+		}
+		handle {
+			rewrite * /templates/article.html
+			templates
+			file_server
+		}
+	}
+
+	# /articles/ and /articles index
+	handle @articleIndex {
+		header +Vary "Accept"
+		@idxMarkdown header Accept *text/markdown*
+		handle @idxMarkdown {
+			header Content-Type "text/markdown; charset=utf-8"
+			rewrite * /articles/index.md
+			file_server
+		}
+		handle {
+			rewrite * /templates/article.html
+			templates
+			file_server
+		}
+	}
+
+	# /articles/{slug} — slug must not contain /
+	handle @articleSlug {
+		header +Vary "Accept"
+		@slugMarkdown header Accept *text/markdown*
+		handle @slugMarkdown {
+			header Content-Type "text/markdown; charset=utf-8"
+			rewrite * /articles/{re.article.1}.md
+			file_server
+		}
+		handle {
+			rewrite * /templates/article.html
+			templates
+			file_server
+		}
+	}
+
+	# Whitelisted static directories
+	handle /css/* {
+		file_server
+	}
+	handle /images/* {
+		file_server
+	}
+	handle /scripts/* {
+		file_server
+	}
+
+	# Custom 404 error handler
+	handle_errors 404 {
+		@404markdown header Accept *text/markdown*
+		handle @404markdown {
+			header Content-Type "text/markdown; charset=utf-8"
+			respond "# 404 Not Found\n\nThe article you requested does not exist.\n\n[← Back to articles](/)" 404
+		}
+		handle {
+			rewrite * /templates/404.html
+			templates
+			file_server
+		}
+	}
+
+	# Catch-all: 403 for everything not whitelisted above
+	handle {
+		respond 403
+	}
 }

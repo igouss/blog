@@ -61,7 +61,11 @@ Plans:
   2. Every article page has a visible navigation link that returns to the blog index
   3. The blog layout is usable on a mobile viewport (no horizontal scroll, readable font size)
   4. `curl -s <article-url> | grep og:title` returns a populated Open Graph title tag from the article's front matter
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — CSS + template: blog.css (SARA styling, dark/light mode) + article.html (Nunito, og:title, back nav, theme toggle)
+- [ ] 03-02-PLAN.md — End-to-end verification: automated curl checks + human checkpoint for visual criteria
 
 ### Phase 4: Sample Content
 **Goal**: Real content proves every pipeline component works end-to-end

@@ -45,7 +45,12 @@ Plans:
   3. Responses from the blog include a `Vary: Accept` header
   4. Requesting a non-existent article returns HTTP 404 (not a blank 200)
   5. Code blocks in articles display with syntax highlighting; direct requests to `/templates/` return HTTP 403
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Caddyfile Phase 2: content negotiation routing, whitelist, 404 handler
+- [ ] 02-02-PLAN.md — Templates + Chroma CSS: article.html, 404.html, css/syntax.css
+- [ ] 02-03-PLAN.md — End-to-end verification: human checkpoint against public URL
 
 ### Phase 3: Styling and Metadata
 **Goal**: Every page is readable, navigable, mobile-friendly, and carries Open Graph metadata
@@ -76,6 +81,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Infrastructure | 3/3 | Complete | 2026-02-21 |
-| 2. Rendering Pipeline | 0/TBD | Not started | - |
+| 2. Rendering Pipeline | 0/3 | In progress | - |
 | 3. Styling and Metadata | 0/TBD | Not started | - |
 | 4. Sample Content | 0/TBD | Not started | - |

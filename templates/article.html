@@ -1,0 +1,30 @@
+{{$origPath := .OriginalReq.URL.Path}}
+{{$mdPath := ""}}
+{{if or (eq $origPath "/") (eq $origPath "/articles/") (eq $origPath "/articles")}}
+  {{$mdPath = "/articles/index.md"}}
+{{else}}
+  {{$mdPath = printf "%s.md" $origPath}}
+{{end}}
+{{if not (fileExists $mdPath)}}{{httpError 404}}{{end}}
+{{$doc := include $mdPath | splitFrontMatter}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{$doc.Meta.title}}</title>
+  <link rel="stylesheet" href="/css/blog.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+</head>
+<body>
+  <main>
+    <article>
+      <header>
+        <h1>{{$doc.Meta.title}}</h1>
+        <time datetime="{{$doc.Meta.date}}">{{$doc.Meta.date}}</time>
+      </header>
+      {{markdown $doc.Body}}
+    </article>
+  </main>
+</body>
+</html>

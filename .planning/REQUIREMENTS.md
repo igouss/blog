@@ -18,10 +18,10 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Rendering
 
 - [x] **REND-01**: Caddy rewrites article URLs to an HTML template for Markdown-to-HTML rendering
-- [ ] **REND-02**: HTML template reads the Markdown file using `.OriginalReq.URL.Path` and renders it via Goldmark
-- [ ] **REND-03**: Template returns HTTP 404 for missing articles (using `fileExists` guard)
-- [ ] **REND-04**: Template displays article title and date from YAML front matter
-- [ ] **REND-05**: Code blocks are syntax-highlighted via Chroma (CSS theme file served alongside blog CSS)
+- [x] **REND-02**: HTML template reads the Markdown file using `.OriginalReq.URL.Path` and renders it via Goldmark
+- [x] **REND-03**: Template returns HTTP 404 for missing articles (using `fileExists` guard)
+- [x] **REND-04**: Template displays article title and date from YAML front matter
+- [x] **REND-05**: Code blocks are syntax-highlighted via Chroma (CSS theme file served alongside blog CSS)
 - [x] **REND-06**: Caddy serves raw Markdown to clients sending `Accept: text/markdown` without `Accept: text/html`
 - [x] **REND-07**: HTTP responses include `Vary: Accept` header when content negotiation is active
 
@@ -83,10 +83,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-04 | Phase 1 | Complete |
 | INFRA-05 | Phase 1 | Complete |
 | REND-01 | Phase 2 | Complete |
-| REND-02 | Phase 2 | Pending |
-| REND-03 | Phase 2 | Pending |
-| REND-04 | Phase 2 | Pending |
-| REND-05 | Phase 2 | Pending |
+| REND-02 | Phase 2 | Complete |
+| REND-03 | Phase 2 | Complete |
+| REND-04 | Phase 2 | Complete |
+| REND-05 | Phase 2 | Complete |
 | REND-06 | Phase 2 | Complete |
 | REND-07 | Phase 2 | Complete |
 | STYL-04 | Phase 2 | Complete |

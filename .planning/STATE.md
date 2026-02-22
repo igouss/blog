@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Markdown files are the single source of truth — write a `.md` file and it's immediately accessible as a beautiful HTML page to browsers and as raw Markdown to API/CLI consumers.
-**Current focus:** Phase 2 (Content Negotiation) — Plan 01 complete, advancing to Plan 02 (templates)
+**Current focus:** Phase 2 (Rendering Pipeline) — Plan 02 complete, advancing to Plan 03 (CSS)
 
 ## Current Position
 
 Phase: 2 of 4 (Rendering Pipeline) — IN PROGRESS
-Plan: 1 of 3 completed in current phase
-Status: Phase 2 Plan 01 complete — Caddyfile routing done, templates next
-Last activity: 2026-02-22 — Completed 02-01 (Phase 2 Caddyfile: content negotiation, whitelist, 404 handler)
+Plan: 2 of 3 completed in current phase
+Status: Phase 2 Plan 02 complete — templates and syntax CSS done, CSS styling next
+Last activity: 2026-02-22 — Completed 02-02 (Caddy Go templates: article.html, 404.html, Chroma syntax.css)
 
-Progress: [████░░░░░░] 33% (4 of 12 total plans)
+Progress: [█████░░░░░] 42% (5 of 12 total plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 7 min
-- Total execution time: 27 min
+- Total plans completed: 5
+- Average duration: 6 min
+- Total execution time: 29 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-infrastructure | 3/3 | 25 min | 8 min |
-| 02-rendering-pipeline | 1/3 | 2 min | 2 min |
+| 02-rendering-pipeline | 2/3 | 4 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 15 min, 5 min, 5 min, 2 min
-- Trend: fast (config-only plan)
+- Last 5 plans: 5 min, 5 min, 2 min, 2 min
+- Trend: fast
 
 *Updated after each plan completion*
 
@@ -59,6 +59,9 @@ Recent decisions affecting current work:
 - [Phase 02-rendering-pipeline 02-01]: Nested named matchers inside handle blocks are scoped correctly (no conflicts)
 - [Phase 02-rendering-pipeline 02-01]: HTML branch returns 404 (not 500) when templates/article.html missing — expected behavior
 - [Phase 02-rendering-pipeline 02-01]: catch-all handle { respond 403 } must be last in Caddy (first-match-wins)
+- [Phase 02-rendering-pipeline 02-02]: Hugo v0.152.2 used only for `hugo gen chromastyles --style=github` — not part of serving stack
+- [Phase 02-rendering-pipeline 02-02]: YAML unquoted date values parse as time.Time → renders as "2026-02-21 00:00:00 +0000 UTC"; articles should quote date values or use a format helper in Phase 4
+- [Phase 02-rendering-pipeline 02-02]: css/blog.css linked from article.html now (returns 404 until Phase 3) — per design: link now, avoid rework later
 
 ### Pending Todos
 
@@ -73,5 +76,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 02-01-PLAN.md (Phase 2 Caddyfile: content negotiation, whitelist, 404 handler); ready for 02-02 templates
+Stopped at: Completed 02-02-PLAN.md (Caddy Go templates: article.html, 404.html, Chroma syntax.css); ready for 02-03 CSS
 Resume file: None

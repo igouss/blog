@@ -59,3 +59,5 @@ Typography is Nunito from Google Fonts at weights 300, 400, and 600. Body text i
 No database. No CMS. No authentication. No JavaScript framework. No bundler. No CI pipeline. Adding an article means adding a `.md` file and pushing a commit.
 
 The index page is itself a markdown file (`articles/index.md`) rendered through the same template as every other article.
+
+Source: [github.com/igouss/blog](https://github.com/igouss/blog)

@@ -13,7 +13,7 @@ Four phases that track the natural dependency chain: get public HTTPS working fi
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Infrastructure** - Caddy + Tailscale Funnel + HTTPS end-to-end, accessible from public internet
-- [ ] **Phase 2: Rendering Pipeline** - Caddyfile content negotiation, Go HTML template, Markdown-to-HTML serving
+- [x] **Phase 2: Rendering Pipeline** - Caddyfile content negotiation, Go HTML template, Markdown-to-HTML serving
 - [ ] **Phase 3: Styling and Metadata** - Clean layout, mobile CSS, back navigation, Open Graph tags
 - [ ] **Phase 4: Sample Content** - Index page and sample article validating the full pipeline
 
@@ -48,9 +48,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Caddyfile Phase 2: content negotiation routing, whitelist, 404 handler
-- [ ] 02-02-PLAN.md — Templates + Chroma CSS: article.html, 404.html, css/syntax.css
-- [ ] 02-03-PLAN.md — End-to-end verification: human checkpoint against public URL
+- [x] 02-01-PLAN.md — Caddyfile Phase 2: content negotiation routing, whitelist, 404 handler
+- [x] 02-02-PLAN.md — Templates + Chroma CSS: article.html, 404.html, css/syntax.css
+- [x] 02-03-PLAN.md — End-to-end verification: human checkpoint against public URL
 
 ### Phase 3: Styling and Metadata
 **Goal**: Every page is readable, navigable, mobile-friendly, and carries Open Graph metadata
@@ -81,6 +81,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Infrastructure | 3/3 | Complete | 2026-02-21 |
-| 2. Rendering Pipeline | 2/3 | In Progress|  |
+| 2. Rendering Pipeline | 3/3 | Complete | 2026-02-22 |
 | 3. Styling and Metadata | 0/TBD | Not started | - |
 | 4. Sample Content | 0/TBD | Not started | - |

@@ -6,6 +6,7 @@ date: "2026-02-22"
 Writing about systems, tools, and the occasional rabbit hole.
 
 ## Articles
+- [Dictating to Claude Code on a phone](/articles/claude-mobile-voice) — mobile wrapper page with arrow-key toolbar and Web Speech API voice dictation for a ttyd terminal.
 - [Claude Code in a browser terminal, tailnet-only, no port](/articles/claude-ttyd-tailscale-caddy) — ttyd + tmux + Caddy header gating for tailnet-only access at port 443 alongside a public blog.
 - [Portainer at a subpath behind Caddy](/articles/portainer-caddy-subpath) — three non-obvious problems getting portainer behind a reverse proxy at a subpath.
 - [Socket-activated Guacamole with Tailscale identity](/articles/guacamole-tailscale-stack) — zero-cost idle browser SSH/RDP/VNC behind Tailscale.

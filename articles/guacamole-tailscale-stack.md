@@ -3,13 +3,15 @@ title: "Socket-activated Guacamole with Tailscale identity"
 date: "2026-02-22"
 ---
 
-Running browser-based SSH, RDP, and VNC through [Apache Guacamole](https://guacamole.apache.org/) behind Tailscale involves three non-obvious decisions: socket activation for zero-cost idle, header auth for SSO, and a thin proxy to bridge them.
+Running browser-based SSH, RDP, and VNC through [Apache Guacamole](https://guacamole.apache.org/) behind Tailscale involves three non-obvious decisions: socket activation for zero-cost idle, delegation of authentication to the network layer, and container networking that reaches the host.
+
+Tested on Fedora with Guacamole 1.6.0, rootless Podman 4.4+, and systemd quadlet.
 
 ## The socket owns the port, not the container
 
-guacd + Tomcat idle at ~350MB. For a service you connect to occasionally, that's waste. The fix is to never let the container own the port.
+guacd + Tomcat idle at ~350MB. For a service you connect to occasionally, that's waste. The fix: never let the container own the port.
 
-A systemd socket unit holds `127.0.0.1:4848` permanently at near-zero cost. The proxy service has `Requires=guacamole.service`, and guacamole has `Requires=guacd.service`. When a browser connects, the socket activates the proxy, which pulls the full stack up. `StopWhenUnneeded=yes` on both container services is the reciprocal: when no unit `Requires=` them anymore, they stop. When the proxy idles out and exits, it no longer requires guacamole — which no longer requires guacd — and both containers stop.
+A systemd socket unit holds `127.0.0.1:4848` permanently at near-zero cost — the kernel keeps the fd open, the service isn't running. `Requires=` chains pull the full stack up on first connection:
 
 ```
 guacamole-proxy.socket        (always on, holds :4848)
@@ -17,44 +19,51 @@ guacamole-proxy.socket        (always on, holds :4848)
        └─ activates guacamole  (Requires= guacd.service)
 ```
 
-Before accepting traffic, the proxy runs an `ExecStartPre` that polls Tomcat's HTTP endpoint in a loop — up to 120 seconds, though Tomcat typically responds in ~12 seconds after guacd is up (~3 seconds). The proxy exits after 120 seconds of no active connections; `StopWhenUnneeded` cascades the rest.
+Before accepting traffic, the proxy polls Tomcat's HTTP endpoint — up to 120 seconds, in practice ~12 seconds after guacd initializes (~3 seconds in the common case; worst-case startup is longer). `StopWhenUnneeded=yes` on both container services is the reciprocal: when the proxy exits after 2 minutes idle, it deactivates guacamole which deactivates guacd — both containers stop.
 
-Port 4848 is bound to `127.0.0.1` only. Tailscale serve is the sole remote entry point; no firewall rules needed.
+`systemd-socket-proxyd` handles all of this without custom code:
 
-## Header auth alone isn't enough
-
-`tailscale serve` proxies HTTPS from your tailnet to a local port and injects `Tailscale-User-Login` on every request — the authenticated user's login, set by Tailscale and unforgeable within that path. `guacamole-auth-header` reads a configurable header and authenticates from its value:
-
-```
-http-auth-header: Tailscale-User-Login
+```ini
+ExecStartPre=/bin/sh -c 'for i in $(seq 60); do curl -sf http://127.0.0.1:14848/guacamole/ \
+  >/dev/null 2>&1 && exit 0; sleep 2; done; echo "guacamole not ready"; exit 1'
+ExecStart=/usr/lib/systemd/systemd-socket-proxyd --exit-idle-time=2min 127.0.0.1:14848
 ```
 
-No login screen. But here's the problem: `guacamole-auth-header` authenticates the user and provides no connections. Connections live in `user-mapping.xml`, owned by `BasicFileAuthenticationProvider`. For that provider to contribute to `availableDataSources`, it must also succeed in `authenticateUser()` — which reads `credentials.getUsername()` and `credentials.getPassword()` from the POST body. When header auth bypasses the login form, the browser POSTs empty credentials. The file provider gets an empty username, returns null, and its connections are excluded.
+Port 4848 is bound to `127.0.0.1` only. There are no publicly routable ports; Tailscale serve is the sole remote entry point.
 
-```bash
-# header only → availableDataSources: []
-curl -s -X POST http://localhost:14848/guacamole/api/tokens \
-  -H "Tailscale-User-Login: you@example.com" -d ""
+## Authentication belongs to the network layer
 
-# header + credentials → availableDataSources: ["default"]
-curl -s -X POST http://localhost:14848/guacamole/api/tokens \
-  -H "Tailscale-User-Login: you@example.com" \
-  --data-urlencode "username=you@example.com" \
-  --data-urlencode "password=yourpass"
+`tailscale serve` proxies HTTPS from your tailnet to a local port. Only devices with a valid Tailscale identity reach it. That makes Guacamole's login screen redundant — anyone who gets to Tomcat is already on the tailnet.
+
+The clean solution is `guacamole-auth-noauth`: a Guacamole extension that skips authentication entirely and serves connections to anyone who reaches the endpoint. Guacamole auto-discovers JARs placed in `GUACAMOLE_HOME/extensions/` — no `guacamole.properties` entry required. That's why the properties file in this project is effectively empty. Connections are defined in `noauth-config.xml`, which the extension reads directly:
+
+```xml
+<configs>
+  <config name="SSH - localhost" protocol="ssh">
+    <param name="hostname" value="host.containers.internal"/>
+    <param name="port" value="22"/>
+  </config>
+  <config name="RDP - localhost" protocol="rdp">
+    <param name="hostname" value="host.containers.internal"/>
+    <param name="port" value="3389"/>
+  </config>
+</configs>
 ```
 
-(These hit Tomcat directly at 14848 to test each auth layer in isolation.)
+This is not a security shortcut — it's a deliberate boundary choice. **The assumption:** all devices on your Tailscale network are trusted peers. If your tailnet is shared (BYOD, contractors), noauth means every tailnet peer sees every configured connection; add Guacamole authentication in that case. For a personal or small-team tailnet where you control every device, the Tailscale layer is the right enforcement point.
 
-This is why `systemd-socket-proxyd` can't be used off the shelf. A thin HTTP proxy replaces it: on `POST /guacamole/api/tokens` with the Tailscale header present, it parses the form-encoded body and injects `username` and `password` via `setdefault` — never overwriting values that are already present. WebSocket upgrade requests (used for the actual terminal and RDP tunnels) are detected by the `Upgrade: websocket` header; the proxy forwards the HTTP 101 handshake response then switches to raw bidirectional pipe mode. The idle watchdog — previously `systemd-socket-proxyd --exit-idle-time` — is reimplemented as a background thread that checks every 15 seconds and calls `os._exit(0)` when idle time is exceeded.
+`noauth-config.xml` reloads on the next page access — no service restart needed when you add or modify connections.
 
 ## Container networking
 
-The two containers share a Podman bridge network (`guac_net`) so Guacamole can reach guacd by hostname (`GUACD_HOSTNAME=guacd`). The Guacamole container also declares `AddHost=host.containers.internal:host-gateway`, which is how SSH, RDP, and VNC connections reach services running on the host from inside the container.
+The two containers share a Podman bridge network (`guac_net`) so Guacamole reaches guacd by hostname (`GUACD_HOSTNAME=guacd`). The Guacamole container declares `AddHost=host.containers.internal:host-gateway`, which resolves to the host from inside the container — how SSH, RDP, and VNC connections cross the bridge.
 
-This setup runs rootless under Podman with SELinux enforcing (Fedora). The volume mount uses `:ro,Z` — the `Z` relabels the bind mount for the container's SELinux context. Remove `:Z` on non-SELinux systems.
+This setup runs rootless under Podman with SELinux enforcing. Volume mounts use `:ro,Z` — the `Z` relabels the bind mount for the container's SELinux context; remove it on non-SELinux systems (Ubuntu, etc.). Production uses Podman quadlet (`.container` files generating native systemd units), not Docker Compose.
 
 ## The pattern
 
-The core insight transfers beyond Guacamole: a systemd socket unit can hold any port indefinitely, with the actual service — container or otherwise — only starting on first use and stopping when idle. `Requires=` chains and `StopWhenUnneeded=yes` handle the cascade automatically. The proxy layer is only necessary because `guacamole-auth-header` and `user-mapping.xml` don't compose without explicit credential bridging in Guacamole 1.6.0; on a database-backed install, the JDBC provider handles `updateAuthenticatedUser()` without credential replay.
+A systemd socket unit can hold any port indefinitely — container or otherwise — with the actual service starting on first use and stopping when idle. `Requires=` chains and `StopWhenUnneeded=yes` handle the cascade automatically.
+
+When your network already enforces access — Tailscale, a VPN, a trusted internal network — duplicating that enforcement at the application layer adds friction without improving security. Pick the right boundary and own it cleanly.
 
 Source: [github.com/igouss/webSshRdp](https://github.com/igouss/webSshRdp)

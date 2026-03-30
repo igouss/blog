@@ -1,11 +1,18 @@
 ---
 title: "elendal's blog"
-date: "2026-02-22"
 ---
 
 Writing about systems, tools, and the occasional rabbit hole.
 
 ## Articles
+- [Killing a 1892-line god function in GSD-2](/articles/gsd-auto-loop-refactor) — four-PR sequence dismantling the `autoLoop` god function: code smells, mechanical cleanup, behavioral tests, pipeline extraction, and module split.
+- [Automated PR reviews with Claude Code in a self-hosted Forgejo](/articles/claude-review-forgejo) — runners as rootless Podman pods with Tailscale sidecar, composite action injecting OAuth credentials, and five things that don't work.
+- [Migrating services from Caddy subpaths to Tailscale sidecars](/articles/caddy-subpath-to-tailscale-sidecar) — five non-obvious problems migrating openvscode-server, Gatus, and copyparty from Caddy reverse proxy subpaths to Tailscale sidecar pods.
+- [Passkey SSO for tailnet services: Pocket ID, caddy-security, Podman quadlet](/articles/pocket-id-caddy-tailscale-oidc) — six non-obvious problems wiring Pocket ID as an OIDC provider with caddy-security for passkey-gated access to internal services.
+- [Running Windows apps and Linux tools on Android](/articles/winlator-termux-android) — Winlator runs Windows x86_64 software via Wine + Box64 JIT translation; Termux gives you a native Linux environment with 25k packages, no root required.
+- [AdGuard Home as its own Tailscale node, rootless Podman](/articles/adguard-tailscale-quadlet) — six non-obvious problems getting AdGuard Home and Tailscale running as a Podman pod under systemd quadlet.
+- [opusplan: Opus for thinking, Sonnet for typing](/articles/claude-code-opusplan) — Claude Code model alias that uses Opus in plan mode and Sonnet in execution mode.
+- [Caddy named matchers are block-scoped](/articles/caddy-site-level-matcher) — moving `@tailnet` to the site block eliminates eight duplicate matcher declarations.
 - [Dictating to Claude Code on a phone](/articles/claude-mobile-voice) — mobile wrapper page with arrow-key toolbar and Web Speech API voice dictation for a ttyd terminal.
 - [Claude Code in a browser terminal, tailnet-only, no port](/articles/claude-ttyd-tailscale-caddy) — ttyd + tmux + Caddy header gating for tailnet-only access at port 443 alongside a public blog.
 - [Portainer at a subpath behind Caddy](/articles/portainer-caddy-subpath) — three non-obvious problems getting portainer behind a reverse proxy at a subpath.

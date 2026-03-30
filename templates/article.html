@@ -1,6 +1,8 @@
 {{$origPath := .OriginalReq.URL.Path}}
 {{$mdPath := ""}}
-{{if or (eq $origPath "/") (eq $origPath "/articles/") (eq $origPath "/articles")}}
+{{if eq $origPath "/"}}
+  {{$mdPath = "/articles/about.md"}}
+{{else if or (eq $origPath "/blog") (eq $origPath "/blog/") (eq $origPath "/articles/") (eq $origPath "/articles")}}
   {{$mdPath = "/articles/index.md"}}
 {{else}}
   {{$mdPath = printf "%s.md" $origPath}}
@@ -31,31 +33,41 @@
   <link rel="stylesheet" href="/css/blog.css">
   <link rel="stylesheet" href="/css/syntax.css">
 </head>
-<body>
-  <main>
-    <a href="/" class="back-nav">← Back</a>
+<body data-path="{{$origPath}}">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <nav aria-label="Site navigation">
+    {{if eq $origPath "/"}}
+    <a href="/blog" class="back-nav">Blog</a>
+    {{else if or (eq $origPath "/blog") (eq $origPath "/blog/")}}
+    <a href="/" class="back-nav"><i data-lucide="arrow-left" aria-hidden="true"></i> Home</a>
+    {{else}}
+    <a href="/blog" class="back-nav"><i data-lucide="arrow-left" aria-hidden="true"></i> Blog</a>
+    {{end}}
+  </nav>
+  <main id="main-content">
     <article>
       <header>
         <h1>{{$doc.Meta.title}}</h1>
-        <time datetime="{{$doc.Meta.date}}">{{$doc.Meta.date}}</time>
+        {{if $doc.Meta.date}}<time datetime="{{$doc.Meta.date}}">{{$doc.Meta.date}}</time>{{end}}
       </header>
       {{markdown $doc.Body}}
     </article>
   </main>
-  <button id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark mode">◐</button>
+
+  <button id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark mode">
+    <i data-lucide="moon" aria-hidden="true"></i>
+    <i data-lucide="sun" aria-hidden="true"></i>
+  </button>
   <script>
     var btn = document.getElementById('theme-toggle');
-    function updateIcon() {
-      btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '◑' : '◐';
-    }
-    updateIcon();
     btn.addEventListener('click', function() {
       var current = document.documentElement.getAttribute('data-theme');
       var next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('blog-theme', next);
-      updateIcon();
     });
   </script>
+  <script src="/scripts/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

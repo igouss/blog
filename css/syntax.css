@@ -75,9 +75,10 @@
 /* TextWhitespace */ .chroma .w { color:#6e7781 }
 
 /* Dark theme: github-dark */
-[data-theme="dark"] .bg,
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bg }
-{ color:#e6edf3;background-color:#0d1117; }
+[data-theme="dark"] .bg { color:#e6edf3;background-color:#0d1117; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .bg { color:#e6edf3;background-color:#0d1117; }
+}
 
 [data-theme="dark"] .chroma { color:#e6edf3;background-color:#0d1117; }
 [data-theme="dark"] .chroma .err { color:#f85149 }

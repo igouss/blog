@@ -514,6 +514,41 @@ body[data-path="/articles"] article ul li a:hover {
 }
 
 /* ============================================================
+   About Page — Profile Layout
+   ============================================================ */
+.about-profile {
+  display: flex;
+  gap: var(--spacing-xxxl);
+  align-items: flex-start;
+}
+
+.about-avatar {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: var(--radius-xl);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-md);
+}
+
+.about-bio {
+  padding-top: var(--spacing-xs);
+}
+
+@media (max-width: 640px) {
+  .about-profile {
+    flex-direction: column;
+    gap: var(--spacing-xxl);
+  }
+
+  .about-avatar {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* ============================================================
    Reduced Motion — Accessibility
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {

@@ -32,32 +32,53 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/blog.css">
   <link rel="stylesheet" href="/css/syntax.css">
+  <script type="module">
+    import { setTheme } from 'https://esm.sh/@fluentui/web-components@3.0.0-rc.9';
+    import { webLightTheme, webDarkTheme } from 'https://esm.sh/@fluentui/tokens@1.0.0-alpha.23';
+
+    function applyFluentTheme() {
+      var attr = document.documentElement.getAttribute('data-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var isDark = attr === 'dark' || (!attr && prefersDark);
+      setTheme(isDark ? webDarkTheme : webLightTheme);
+    }
+
+    applyFluentTheme();
+
+    // Keep Fluent theme in sync with the data-theme toggle
+    new MutationObserver(applyFluentTheme)
+      .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Also respond to system preference changes when no explicit theme is set
+    window.matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', applyFluentTheme);
+  </script>
 </head>
 <body data-path="{{$origPath}}">
   <a href="#main-content" class="skip-link">Skip to main content</a>
   <nav aria-label="Site navigation">
-    {{if eq $origPath "/"}}
-    <a href="/blog" class="back-nav">Blog</a>
-    {{else if or (eq $origPath "/blog") (eq $origPath "/blog/")}}
-    <a href="/" class="back-nav"><i data-lucide="arrow-left" aria-hidden="true"></i> Home</a>
-    {{else}}
-    <a href="/blog" class="back-nav"><i data-lucide="arrow-left" aria-hidden="true"></i> Blog</a>
-    {{end}}
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">elendal</a>
+      <div class="nav-links">
+        <a href="/blog">Blog</a>
+        <button id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark mode">
+          <i data-lucide="moon" aria-hidden="true"></i>
+          <i data-lucide="sun" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
   </nav>
   <main id="main-content">
     <article>
       <header>
         <h1>{{$doc.Meta.title}}</h1>
-        {{if $doc.Meta.date}}<time datetime="{{$doc.Meta.date}}">{{$doc.Meta.date}}</time>{{end}}
+        {{if $doc.Meta.date}}<fluent-badge appearance="ghost" size="small"><time datetime="{{$doc.Meta.date}}">{{$doc.Meta.date}}</time></fluent-badge>{{end}}
       </header>
       {{markdown $doc.Body}}
     </article>
   </main>
 
-  <button id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark mode">
-    <i data-lucide="moon" aria-hidden="true"></i>
-    <i data-lucide="sun" aria-hidden="true"></i>
-  </button>
+
   <script>
     var btn = document.getElementById('theme-toggle');
     btn.addEventListener('click', function() {

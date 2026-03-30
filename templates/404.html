@@ -5,13 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 Not Found</title>
   <link rel="stylesheet" href="/css/blog.css">
+  <script type="module">
+    import { setTheme } from 'https://esm.sh/@fluentui/web-components@3.0.0-rc.9';
+    import { webLightTheme, webDarkTheme } from 'https://esm.sh/@fluentui/tokens@1.0.0-alpha.23';
+
+    function applyFluentTheme() {
+      var attr = document.documentElement.getAttribute('data-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var isDark = attr === 'dark' || (!attr && prefersDark);
+      setTheme(isDark ? webDarkTheme : webLightTheme);
+    }
+
+    applyFluentTheme();
+
+    // Keep Fluent theme in sync with the data-theme toggle
+    new MutationObserver(applyFluentTheme)
+      .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Also respond to system preference changes when no explicit theme is set
+    window.matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', applyFluentTheme);
+  </script>
 </head>
 <body>
   <main id="main-content">
     <article>
       <h1>404 Not Found</h1>
       <p>The article you requested does not exist.</p>
-      <p><a href="/blog">&#8592; Back to articles</a></p>
+      <p><fluent-anchor-button href="/blog" appearance="subtle">← Back to articles</fluent-anchor-button></p>
     </article>
   </main>
 </body>

@@ -188,26 +188,71 @@ article {
 }
 
 /* ============================================================
-   Navigation — Back Link
+   Navigation Bar
    ============================================================ */
-.back-nav {
-  display: inline-flex;
+body > nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--stroke-subtle);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background var(--duration-normal) var(--ease-soft),
+              border-color var(--duration-normal) var(--ease-soft);
+}
+
+.nav-inner {
+  max-width: 80ch;
+  margin: 0 auto;
+  padding: var(--spacing-m) var(--spacing-xl);
+  display: flex;
   align-items: center;
-  gap: var(--spacing-s-nudge);
+  justify-content: space-between;
+}
+
+.nav-brand {
+  font-size: var(--font-size-300);
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: lowercase;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-soft);
+}
+
+.nav-brand:hover {
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+}
+
+.nav-links a,
+.nav-links a:visited {
   color: var(--text-tertiary);
   text-decoration: none;
   font-size: var(--font-size-300);
-  letter-spacing: 1px;
-  padding: var(--spacing-s-nudge) var(--spacing-m-nudge);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-l);
-  display: block;
-  transition: all var(--duration-fast) var(--ease-soft);
+  letter-spacing: 0.5px;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: color var(--duration-fast) var(--ease-soft),
+              border-color var(--duration-fast) var(--ease-soft);
 }
 
-.back-nav:hover {
+.nav-links a:hover {
   color: var(--text-primary);
-  background: var(--bg-secondary);
+}
+
+/* Active page indicator */
+body[data-path="/blog"] .nav-links a[href="/blog"],
+body[data-path="/blog/"] .nav-links a[href="/blog"],
+body[data-path^="/articles"] .nav-links a[href="/blog"] {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
 }
 
 /* ============================================================
@@ -230,6 +275,11 @@ article header time {
   font-size: var(--font-size-200);
   color: var(--text-tertiary);
   letter-spacing: 2px;
+}
+
+article header fluent-badge {
+  margin-top: var(--spacing-xs);
+  display: inline-block;
 }
 
 /* ============================================================
@@ -360,30 +410,25 @@ article hr {
 }
 
 /* ============================================================
-   Theme Toggle Button — Fixed Position
+   Theme Toggle Button — Nav Bar
    ============================================================ */
 #theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 40px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: var(--bg-secondary);
+  background: none;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  box-shadow: var(--shadow-md);
-  transition: all var(--duration-fast) var(--ease-soft);
+  font-size: 0.85rem;
   color: var(--text-tertiary);
+  transition: color var(--duration-fast) var(--ease-soft);
+  padding: 0;
 }
 
 #theme-toggle:hover {
-  transform: scale(1.1);
-  box-shadow: var(--shadow-lg);
   color: var(--text-primary);
 }
 
@@ -401,7 +446,6 @@ article hr {
 }
 
 /* Icon sizing */
-.back-nav i[data-lucide],
 #theme-toggle i[data-lucide] {
   width: 1em;
   height: 1em;
@@ -422,12 +466,6 @@ article hr {
     font-size: var(--font-size-hero-700);
   }
 
-  #theme-toggle {
-    top: 15px;
-    right: 15px;
-    width: 36px;
-    height: 36px;
-  }
 }
 
 /* ============================================================

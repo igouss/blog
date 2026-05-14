@@ -1,581 +1,850 @@
-/* Fluent 2 Design System — Blog Reading Layout
- * Font: Segoe UI Variable / Segoe UI | Base: 18px | Line-height: 1.6
- */
+/* =========================================================================
+   GOUSSEV & CO. — single-ink lithography, c. 1901, applied to a 2026 blog.
+   Edge-to-edge cream paper. No dark mode (period-correct).
+   Tokens / type / structural elements / masthead / article / index / about / 404.
+   ========================================================================= */
 
-/* ============================================================
-   CSS Custom Properties — Light Mode (default)
-   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@0;1&family=IM+Fell+DW+Pica+SC&family=IM+Fell+English:ital@0;1&family=Playfair+Display:wght@700;900&family=Rye&family=Pinyon+Script&family=Petit+Formal+Script&family=Special+Elite&family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
 :root {
-  /* Backgrounds — Fluent 2 light */
-  --bg-primary: #ffffff;
-  --bg-secondary: #fafafa;
-  --bg-tertiary: #f5f5f5;
+  /* ===== INK PALETTE — single-ink lithography ============================== */
+  --ink:               #1a2233;
+  --ink-soft:          #2c3852;
+  --ink-faded:         #5a6478;
+  --ink-ghost:         #8a8a8a;
 
-  /* Text — Fluent 2 light */
-  --text-primary: #242424;
-  --text-secondary: #616161;
-  --text-tertiary: #707070;
+  --sepia:             #5b3a1a;
+  --sepia-soft:        #7a5a3a;
+  --sepia-faded:       #a48462;
 
-  /* Accents — Amber */
-  --accent: #c27a1a;
-  --accent-hover: #a56615;
+  --vermillion:        #c0392b;
+  --vermillion-soft:   #d65a4a;
+  --aniline-purple:    #5a3a86;
 
-  /* Strokes */
-  --stroke-default: #d1d1d1;
-  --stroke-subtle: #e0e0e0;
+  /* ===== PAPER ============================================================= */
+  --paper:             #f2e8d2;
+  --paper-laid:        #ebdfc0;
+  --paper-manila:      #e5d3a8;
+  --paper-edge:        #d6c195;
+  --foxing:            #c9a07a;
+  --foxing-deep:       #8a6038;
 
-  /* Shadows — Fluent 2 dual key+ambient */
-  --shadow-sm: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
-  --shadow-md: 0 0 2px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.14);
-  --shadow-lg: 0 0 2px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.14);
+  /* ===== SEMANTIC ROLES =================================================== */
+  --fg-1:              var(--ink);
+  --fg-2:              var(--ink-soft);
+  --fg-3:              var(--ink-faded);
+  --fg-script:         var(--aniline-purple);
+  --fg-stamp:          var(--vermillion);
+  --fg-cancel:         var(--aniline-purple);
+  --fg-alt:            var(--sepia);
 
-  /* Border radius — Fluent 2 */
-  --radius-sm: 2px;
-  --radius-md: 4px;
-  --radius-lg: 6px;
-  --radius-xl: 8px;
+  --bg-page:           var(--paper);
+  --bg-card:           var(--paper-laid);
+  --bg-envelope:       var(--paper-manila);
+  --bg-emphasis:       #e0d2a8;
 
-  /* Motion — Fluent 2 */
-  --ease-soft: cubic-bezier(0.33, 0, 0.67, 1);
-  --duration-fast: 150ms;
-  --duration-normal: 200ms;
+  --rule:              var(--ink);
+  --rule-soft:         #6b5a3a;
 
-  /* Spacing — Fluent 2 global ramp (4px base unit) */
-  --spacing-xxs: 2px;
-  --spacing-xs: 4px;
-  --spacing-s-nudge: 6px;
-  --spacing-s: 8px;
-  --spacing-m-nudge: 10px;
-  --spacing-m: 12px;
-  --spacing-l: 16px;
-  --spacing-xl: 20px;
-  --spacing-xxl: 24px;
-  --spacing-xxxl: 32px;
-  --spacing-xxxxl: 48px;
+  /* ===== TYPE FACES ======================================================== */
+  --face-fat:          'Playfair Display', 'IM Fell DW Pica', serif;
+  --face-wood:         'Rye', 'IM Fell DW Pica', serif;
+  --face-engraved:     'Cinzel', 'IM Fell DW Pica SC', 'IM Fell DW Pica', serif;
+  --face-roman:        'IM Fell DW Pica', 'IM Fell English', Georgia, serif;
+  --face-italic:       'IM Fell DW Pica', Georgia, serif;
+  --face-script:       'Pinyon Script', 'Petit Formal Script', cursive;
+  --face-typewriter:   'Special Elite', 'Courier Prime', ui-monospace, monospace;
+  --face-mono:         'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
 
-  /* Typography — Fluent 2 font size ramp */
-  --font-size-100: 10px;
-  --font-size-200: 12px;
-  --font-size-300: 14px;
-  --font-size-400: 16px;
-  --font-size-500: 20px;
-  --font-size-600: 24px;
-  --font-size-hero-700: 28px;
-  --font-size-hero-800: 32px;
-  --font-size-hero-900: 40px;
-  --font-size-hero-1000: 68px;
+  /* ===== SIZES ============================================================ */
+  --size-marquee:      96px;
+  --size-display:      56px;
+  --size-banderole:    34px;
+  --size-h1:           28px;
+  --size-h2:           20px;
+  --size-h3:           15px;
+  --size-body:         16px;
+  --size-body-sm:      14px;
+  --size-fine:         12px;
+  --size-mono:         13.5px;
 
-  /* Typography — Fluent 2 line height ramp */
-  --line-height-100: 14px;
-  --line-height-200: 16px;
-  --line-height-300: 20px;
-  --line-height-400: 22px;
-  --line-height-500: 28px;
-  --line-height-600: 32px;
-  --line-height-hero-700: 36px;
-  --line-height-hero-800: 40px;
-  --line-height-hero-900: 52px;
-  --line-height-hero-1000: 92px;
+  /* ===== TRACKING ========================================================= */
+  --track-fat:         -0.02em;
+  --track-wood:         0.01em;
+  --track-engraved:     0.12em;
+  --track-engraved-wide: 0.28em;
+  --track-body:         0;
+  --track-script:       0;
+
+  /* ===== LEADING ========================================================== */
+  --lead-display:       0.95;
+  --lead-banderole:     1.05;
+  --lead-body:          1.55;
+  --lead-script:        1.35;
+  --lead-mono:          1.55;
+
+  /* ===== STRUCTURAL TOKENS ================================================ */
+  --radius-none:       0;
+  --radius-hair:       1px;
+  --rule-hair:         1px solid var(--ink);
+  --rule-hair-soft:    1px solid var(--rule-soft);
+  --rule-double:       3px double var(--ink);
+  --rule-heavy:        2px solid var(--ink);
+
+  --shadow-none:       none;
+  --shadow-engrave:    inset 0 1px 0 rgba(255,250,235,0.6), 0 1px 0 rgba(26,34,51,0.15);
+
+  /* ===== SPACING ========================================================== */
+  --space-1:           4px;
+  --space-2:           8px;
+  --space-3:           12px;
+  --space-4:           16px;
+  --space-5:           24px;
+  --space-6:           32px;
+  --space-7:           48px;
+  --space-8:           64px;
+
+  --margin-masthead:   var(--space-7);
+  --margin-section:    var(--space-6);
+  --margin-paragraph:  var(--space-4);
 }
 
-/* ============================================================
-   Dark Mode — data-theme attribute (JS toggle)
-   Applied via JS writing data-theme="dark" to <html>
-   ============================================================ */
-[data-theme="dark"] {
-  --bg-primary: #292929;
-  --bg-secondary: #1f1f1f;
-  --bg-tertiary: #141414;
-  --text-primary: #ffffff;
-  --text-secondary: #d6d6d6;
-  --text-tertiary: #adadad;
-  --accent: #e8a840;
-  --accent-hover: #f0c060;
-  --stroke-default: #666666;
-  --stroke-subtle: #525252;
-  --shadow-sm: 0 0 2px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.28);
-  --shadow-md: 0 0 2px rgba(0,0,0,0.24), 0 4px 8px rgba(0,0,0,0.28);
-  --shadow-lg: 0 0 2px rgba(0,0,0,0.24), 0 8px 16px rgba(0,0,0,0.28);
+/* ==========================================================================
+   RESET
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; }
+
+/* ==========================================================================
+   PAPER — body fills the viewport with cream paper, foxing in the corners,
+   subtle edge darkening. No wood-desk surround.
+   ========================================================================== */
+body {
+  font-family: var(--face-roman);
+  font-size: var(--size-body);
+  line-height: var(--lead-body);
+  color: var(--fg-1);
+  min-height: 100vh;
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 10% 8%,  rgba(201,160,122,0.20) 0%, transparent 32%),
+    radial-gradient(ellipse at 92% 6%,  rgba(138, 96, 56, 0.12) 0%, transparent 28%),
+    radial-gradient(ellipse at 88% 94%, rgba(201,160,122,0.22) 0%, transparent 32%),
+    radial-gradient(ellipse at 6%  92%, rgba(138, 96, 56, 0.12) 0%, transparent 25%),
+    radial-gradient(ellipse at 50% 50%, rgba(242,232,210,0) 60%, rgba(214,193,149,0.40) 100%);
+  background-attachment: fixed;
 }
 
-/* ============================================================
-   Dark Mode — System Preference
-   Activates before JS runs (no FOUC for system-dark users
-   who haven't explicitly chosen a theme)
-   ============================================================ */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg-primary: #292929;
-    --bg-secondary: #1f1f1f;
-    --bg-tertiary: #141414;
-    --text-primary: #ffffff;
-    --text-secondary: #d6d6d6;
-    --text-tertiary: #adadad;
-    --accent: #e8a840;
-    --accent-hover: #f0c060;
-    --stroke-default: #666666;
-    --stroke-subtle: #525252;
-    --shadow-sm: 0 0 2px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.28);
-    --shadow-md: 0 0 2px rgba(0,0,0,0.24), 0 4px 8px rgba(0,0,0,0.28);
-    --shadow-lg: 0 0 2px rgba(0,0,0,0.24), 0 8px 16px rgba(0,0,0,0.28);
-  }
+/* ==========================================================================
+   READING COLUMN
+   ========================================================================== */
+body > main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-8);
 }
 
-/* ============================================================
-   Global Reset
-   ============================================================ */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+article { width: 100%; }
 
-/* ============================================================
-   Skip Link — Accessibility
-   ============================================================ */
+/* ==========================================================================
+   SKIP LINK
+   ========================================================================== */
 .skip-link {
   position: fixed;
-  top: 16px;
+  top: 12px;
   left: 50%;
   transform: translateX(-50%) translateY(-200%);
-  background: var(--bg-primary);
-  color: var(--accent);
-  padding: var(--spacing-m-nudge) var(--spacing-xl);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--stroke-default);
-  font-weight: 600;
-  font-size: var(--font-size-300);
-  box-shadow: var(--shadow-md);
+  background: var(--paper);
+  color: var(--ink);
+  padding: 8px 18px;
+  border: 1px solid var(--ink);
+  font-family: var(--face-engraved);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
   z-index: 1000;
-  white-space: nowrap;
+  transition: transform 150ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.skip-link:focus { transform: translateX(-50%) translateY(0); }
+
+/* ==========================================================================
+   MASTHEAD — trim variant for all pages (wordmark + tagline + nav)
+   ========================================================================== */
+body > header.masthead {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-5) var(--space-3);
+}
+.bm-trim {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--ink);
+  position: relative;
+}
+.bm-trim-wordmark {
+  font-family: var(--face-fat);
+  font-weight: 900;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--fg-1);
   text-decoration: none;
-  transition: transform var(--duration-fast) var(--ease-soft);
+  line-height: 1;
 }
-
-.skip-link:focus {
-  transform: translateX(-50%) translateY(0);
+.bm-trim-wordmark .amp {
+  font-family: var(--face-script);
+  font-weight: 400;
+  font-size: 0.95em;
+  color: var(--ink-soft);
+  text-transform: none;
+  letter-spacing: 0;
 }
-
-/* ============================================================
-   Base — html & body
-   ============================================================ */
-html {
-  font-size: 18px;
+.bm-trim-tag {
+  font-family: var(--face-engraved);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  text-align: center;
 }
-
-body {
-  font-family: 'Nunito', 'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.8;
-  min-height: 100vh;
-  transition: background var(--duration-normal) var(--ease-soft), color var(--duration-normal) var(--ease-soft);
-}
-
-/* ============================================================
-   Layout — Reading Column
-   ============================================================ */
-body > main {
-  max-width: 80ch;
-  margin: 0 auto;
-  padding: var(--spacing-xxl) var(--spacing-xl);
-}
-
-article {
-  width: 100%;
-}
-
-/* ============================================================
-   Navigation Bar
-   ============================================================ */
-body > nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--stroke-subtle);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: background var(--duration-normal) var(--ease-soft),
-              border-color var(--duration-normal) var(--ease-soft);
-}
-
-.nav-inner {
-  max-width: 80ch;
-  margin: 0 auto;
-  padding: var(--spacing-m) var(--spacing-xl);
+.bm-nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0;
+  font-family: var(--face-engraved);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
-
-.nav-brand {
-  font-size: var(--font-size-300);
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: lowercase;
-  color: var(--text-primary);
+.bm-nav a {
+  color: var(--fg-1);
   text-decoration: none;
-  transition: color var(--duration-fast) var(--ease-soft);
+  padding: 4px 10px;
+  border-bottom: 1px solid transparent;
+  transition: color 150ms cubic-bezier(0.25, 0.1, 0.25, 1),
+              border-color 150ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
+.bm-nav a:hover { color: var(--vermillion); border-bottom-color: var(--vermillion); }
+.bm-nav a.cur { color: var(--vermillion); border-bottom-color: var(--vermillion); }
 
-.nav-brand:hover {
-  color: var(--accent);
+/* ==========================================================================
+   SEMANTIC TYPOGRAPHY — applies to markdown-rendered prose
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--face-engraved);
+  font-weight: 700;
+  letter-spacing: var(--track-engraved);
+  text-transform: uppercase;
+  color: var(--fg-1);
+  text-wrap: balance;
 }
+h1 { font-size: var(--size-h1); margin: 0 0 var(--space-4); }
+h2 { font-size: var(--size-h2); margin: var(--space-6) 0 var(--space-3); }
+h3 { font-size: var(--size-h3); margin: var(--space-5) 0 var(--space-2); color: var(--fg-2); }
+h4 { font-size: 13px; margin: var(--space-4) 0 var(--space-2); color: var(--fg-2); letter-spacing: 0.10em; }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xl);
+p, li {
+  font-family: var(--face-roman);
+  font-size: var(--size-body);
+  line-height: var(--lead-body);
+  text-wrap: pretty;
 }
+p { margin: 0 0 var(--margin-paragraph); }
 
-.nav-links a,
-.nav-links a:visited {
-  color: var(--text-tertiary);
-  text-decoration: none;
-  font-size: var(--font-size-300);
-  letter-spacing: 0.5px;
-  padding-bottom: 2px;
-  border-bottom: 2px solid transparent;
-  transition: color var(--duration-fast) var(--ease-soft),
-              border-color var(--duration-fast) var(--ease-soft);
+em, i { font-family: var(--face-roman); font-style: italic; color: var(--fg-1); }
+strong, b { font-family: var(--face-roman); font-weight: 700; }
+
+a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color 150ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
+a:hover { color: var(--vermillion); }
 
-.nav-links a:hover {
-  color: var(--text-primary);
+/* Lists — restrained: bullet markers are tiny serif fleurons */
+ul, ol { padding-left: 0; list-style: none; margin: 0 0 var(--space-4); }
+ul li, ol li { padding: 4px 0 4px 22px; position: relative; }
+ul li::before {
+  content: '\2766';
+  position: absolute;
+  left: 2px; top: 4px;
+  font-family: serif;
+  color: var(--fg-2);
+  font-size: 14px;
+  line-height: var(--lead-body);
 }
-
-/* Active page indicator */
-body[data-path="/blog"] .nav-links a[href="/blog"],
-body[data-path="/blog/"] .nav-links a[href="/blog"],
-body[data-path^="/articles"] .nav-links a[href="/blog"] {
-  color: var(--text-primary);
-  border-bottom-color: var(--accent);
-}
-
-/* ============================================================
-   Article Header
-   ============================================================ */
-article header {
-  margin-bottom: var(--spacing-xxl);
-}
-
-article header h1 {
-  font-size: var(--font-size-hero-800);
-  font-weight: 300;
-  letter-spacing: 0.5px;
-  color: var(--text-secondary);
-  line-height: 1.3;
-  margin-bottom: var(--spacing-m-nudge);
-}
-
-article header time {
-  font-size: var(--font-size-200);
-  color: var(--text-tertiary);
-  letter-spacing: 2px;
-}
-
-article header fluent-badge {
-  margin-top: var(--spacing-xs);
-  display: inline-block;
-}
-
-/* ============================================================
-   Article Body Typography
-   ============================================================ */
-article p {
-  margin-bottom: 1rem;
-  color: var(--text-primary);
-}
-
-article h2,
-article h3,
-article h4 {
-  margin: 1.5rem 0 0.5rem;
-}
-
-article h2 {
-  font-size: var(--font-size-600);
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: var(--text-secondary);
-}
-
-article h3 {
-  font-size: var(--font-size-500);
-  font-weight: 600;
+ol { counter-reset: olnum; }
+ol li::before {
+  counter-increment: olnum;
+  content: counter(olnum) ".";
+  position: absolute;
+  left: 0; top: 4px;
+  font-family: var(--face-engraved);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--fg-2);
   letter-spacing: 0;
-  color: var(--text-tertiary);
 }
+li > ul, li > ol { margin: 6px 0 0; }
+li > ul li, li > ol li { padding-left: 18px; }
 
-article h4 {
-  font-size: var(--font-size-400);
-  font-weight: 600;
-  letter-spacing: 0;
-  color: var(--text-tertiary);
-}
-
-article a {
-  color: var(--text-secondary);
-  text-underline-offset: 3px;
-  transition: color 0.3s;
-}
-
-article a:hover {
-  color: var(--text-primary);
-}
-
-article blockquote {
-  border-left: 3px solid var(--accent);
-  padding-left: var(--spacing-xl);
-  margin: 1.5rem 0;
-  color: var(--text-secondary);
-  font-style: italic;
-}
-
-article code {
-  background: var(--bg-tertiary);
-  border: 1px solid var(--stroke-subtle);
+/* Code — modern engineer's voice */
+code, kbd, samp {
+  font-family: var(--face-mono);
+  font-size: var(--size-mono);
+  color: var(--fg-1);
+  background: rgba(26,34,51,0.06);
   padding: 1px 5px;
-  border-radius: var(--radius-md);
-  font-size: 0.82em;
-  color: var(--text-primary);
+  border: 1px solid rgba(26,34,51,0.12);
 }
 
-article pre {
-  background: var(--bg-secondary);
-  padding: 10px 14px;
-  border-radius: var(--radius-xl);
+pre {
+  font-family: var(--face-mono);
+  font-size: var(--size-mono);
+  line-height: var(--lead-mono);
+  color: var(--fg-1);
+  background: rgba(235, 223, 192, 0.45);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-4);
+  border: 1px solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: 4px;
   overflow-x: auto;
-  margin: 0.75rem 0;
-  box-shadow: var(--shadow-sm);
+  margin: var(--space-5) 0 var(--space-6);
+}
+pre code { background: transparent; border: 0; padding: 0; }
+
+/* Chroma syntax highlighter — strip the stark-white backgrounds and
+   let the cream-paper-toned <pre> surround show through. */
+.chroma, pre.chroma, div.chroma { background: transparent !important; }
+.bg { background: transparent !important; }
+
+/* Blockquote — italic body with engrosser's-script opening quote */
+blockquote {
+  font-family: var(--face-roman);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.5;
+  margin: var(--space-5) 0;
+  padding-left: var(--space-5);
+  border-left: 0;
+  color: var(--fg-1);
+  position: relative;
+}
+blockquote::before {
+  content: '\201C';
+  font-family: var(--face-fat);
+  font-size: 64px;
+  color: var(--fg-2);
+  position: absolute;
+  left: -8px;
+  top: -12px;
+  line-height: 1;
+}
+blockquote p { margin-bottom: var(--space-3); }
+blockquote p:last-child { margin-bottom: 0; }
+
+/* Horizontal rule — sprig engraving as ornament */
+hr {
+  border: 0;
+  margin: var(--space-6) 0;
+  text-align: center;
+  height: auto;
+}
+hr::before {
+  content: '';
+  display: inline-block;
+  width: 240px;
+  height: 24px;
+  background-image: url('/images/engravings/sprig-1.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  mix-blend-mode: multiply;
+  filter: contrast(1.05);
+  opacity: 0.85;
 }
 
-article pre code {
-  display: block;
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: var(--font-size-300);
-  line-height: 1.45;
-  color: inherit;
-}
-
-article ul,
-article ol {
-  padding-left: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-article li {
-  margin-bottom: var(--spacing-s-nudge);
-}
-
-article table {
+/* Tables — ledger style */
+table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
-  font-size: var(--font-size-300);
+  margin: var(--space-5) 0;
+  font-family: var(--face-roman);
+  font-size: var(--size-body-sm);
 }
-
-article th {
+thead th {
+  font-family: var(--face-engraved);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   text-align: left;
-  font-weight: 600;
-  color: var(--text-secondary);
-  padding: var(--spacing-s) var(--spacing-l);
-  border-bottom: 2px solid var(--stroke-default);
+  color: var(--fg-2);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--ink);
 }
-
-article td {
-  padding: var(--spacing-s) var(--spacing-l);
-  border-bottom: 1px solid var(--stroke-subtle);
-  color: var(--text-primary);
+tbody td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px dashed rgba(91,58,26,0.35);
   vertical-align: top;
+  color: var(--fg-1);
+}
+tbody tr:hover td { background: rgba(192, 57, 43, 0.04); }
+
+/* Images in flow */
+article img {
+  max-width: 100%;
+  height: auto;
+  mix-blend-mode: multiply;
+  filter: contrast(1.05);
+  display: block;
+  margin: var(--space-5) auto;
 }
 
-article tr:last-child td {
-  border-bottom: none;
+/* ==========================================================================
+   ARTICLE — eyebrow, fat title, dek + date stamp, body
+   ========================================================================== */
+article > header {
+  margin-bottom: var(--space-6);
+  text-align: center;
+  position: relative;
 }
-
-article tr:hover td {
-  background: var(--bg-secondary);
+.art-eyebrow {
+  font-family: var(--face-engraved);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin-bottom: var(--space-1);
 }
-
-article hr {
-  border: none;
-  border-top: 1px solid var(--stroke-subtle);
-  margin: 2rem 0;
+.art-eyebrow::before, .art-eyebrow::after {
+  content: '\2766';
+  margin: 0 8px;
+  font-family: serif;
+  vertical-align: -1px;
 }
-
-/* ============================================================
-   Theme Toggle Button — Nav Bar
-   ============================================================ */
-#theme-toggle {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: none;
-  border: none;
-  cursor: pointer;
+article > header h1 {
+  font-family: var(--face-fat);
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  text-align: center;
+  text-wrap: balance;
+  margin: var(--space-2) 0 var(--space-3);
+  color: var(--fg-1);
+}
+.art-meta {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
-  color: var(--text-tertiary);
-  transition: color var(--duration-fast) var(--ease-soft);
-  padding: 0;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
 }
 
-#theme-toggle:hover {
-  color: var(--text-primary);
+/* Date stamp — circular aniline-purple rubber stamp */
+.date-stamp-lg {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 2px double var(--aniline-purple);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--aniline-purple);
+  font-family: var(--face-engraved);
+  text-align: center;
+  transform: rotate(-3deg);
+  flex-shrink: 0;
+  line-height: 1;
+}
+.date-stamp-lg .city { font-size: 8px; letter-spacing: 0.20em; margin-bottom: 2px; }
+.date-stamp-lg .mo   { font-size: 12px; letter-spacing: 0.12em; }
+.date-stamp-lg .day  { font-size: 22px; font-weight: 700; margin: 2px 0; }
+.date-stamp-lg .yr   { font-size: 10px; letter-spacing: 0.10em; }
+
+/* Article body — h2 gets the centered engraved sub-section treatment */
+article > .art-body, article > section {
+  max-width: 660px;
+  margin: 0 auto;
+}
+.art-body h2, article > section > h2 {
+  font-family: var(--face-engraved);
+  font-size: 17px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: var(--space-7) 0 var(--space-3);
+  color: var(--fg-1);
+  position: relative;
+}
+.art-body h2::after, article > section > h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: var(--ink);
+  margin: var(--space-2) auto 0;
 }
 
-/* Light mode: show moon (click to switch to dark) */
-#theme-toggle i[data-lucide="moon"] { display: flex; }
-#theme-toggle i[data-lucide="sun"] { display: none; }
-
-/* Dark mode: show sun (click to switch to light) */
-[data-theme="dark"] #theme-toggle i[data-lucide="moon"] { display: none; }
-[data-theme="dark"] #theme-toggle i[data-lucide="sun"] { display: flex; }
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) #theme-toggle i[data-lucide="moon"] { display: none; }
-  :root:not([data-theme="light"]) #theme-toggle i[data-lucide="sun"] { display: flex; }
+/* ==========================================================================
+   ARTICLE CLOSING — signature with engraver's script
+   ========================================================================== */
+.art-closing { margin-top: var(--space-7); }
+.art-closing .closing-orn {
+  text-align: center;
+  font-family: serif;
+  font-size: 22px;
+  color: var(--fg-2);
+  margin: var(--space-5) 0 var(--space-2);
+  letter-spacing: 1.2em;
+}
+.art-closing .yours {
+  font-family: var(--face-roman);
+  font-style: italic;
+  font-size: 15px;
+  text-align: right;
+  margin: var(--space-5) 0 var(--space-1);
+  color: var(--fg-1);
+}
+.art-closing .signature .name {
+  font-family: var(--face-script);
+  font-size: 52px;
+  color: var(--fg-script);
+  line-height: 1;
+  text-align: right;
+  margin-right: var(--space-6);
+}
+.art-closing .signature .role {
+  font-family: var(--face-engraved);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  text-align: right;
+  margin-top: var(--space-2);
 }
 
-/* Icon sizing */
-#theme-toggle i[data-lucide] {
-  width: 1em;
-  height: 1em;
-  vertical-align: middle;
-  stroke-width: 2;
-  display: inline-flex;
+.art-back {
+  margin: var(--space-7) 0 0;
+  padding-top: var(--space-4);
+  border-top: 3px double var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--face-engraved);
+  font-size: 11px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
 }
+.art-back a { color: var(--fg-1); text-decoration: none; }
+.art-back a:hover { color: var(--vermillion); }
 
-/* ============================================================
-   Mobile Responsive — 640px and below
-   ============================================================ */
-@media (max-width: 640px) {
-  body > main {
-    padding: var(--spacing-xl) var(--spacing-m-nudge);
-  }
-
-  article header h1 {
-    font-size: var(--font-size-hero-700);
-  }
-
-}
-
-/* ============================================================
-   Article Index Cards — /blog path only
-   Targets Caddy-generated <ul><li><a> from markdown list
-   ============================================================ */
-body[data-path="/blog"] article ul,
-body[data-path="/articles/"] article ul,
-body[data-path="/articles"] article ul {
+/* ==========================================================================
+   INDEX — /blog and /articles render markdown <ul> as a ledger list
+   ========================================================================== */
+body[data-path="/blog"] article > section > ul,
+body[data-path="/blog/"] article > section > ul,
+body[data-path="/articles"] article > section > ul,
+body[data-path="/articles/"] article > section > ul,
+body[data-path="/blog"] article > ul,
+body[data-path="/blog/"] article > ul,
+body[data-path="/articles"] article > ul,
+body[data-path="/articles/"] article > ul {
   list-style: none;
   padding: 0;
-  margin: var(--spacing-xxl) 0 0;
+  margin: var(--space-5) 0 var(--space-6);
 }
-
 body[data-path="/blog"] article ul li,
-body[data-path="/articles/"] article ul li,
-body[data-path="/articles"] article ul li {
-  padding: var(--spacing-l);
-  border: 1px solid var(--stroke-subtle);
-  border-radius: var(--radius-xl);
-  margin-bottom: var(--spacing-m);
-  transition: box-shadow var(--duration-fast) var(--ease-soft),
-              border-color var(--duration-fast) var(--ease-soft);
+body[data-path="/blog/"] article ul li,
+body[data-path="/articles"] article ul li,
+body[data-path="/articles/"] article ul li {
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--ink);
+  position: relative;
 }
-
+body[data-path="/blog"] article ul li::before,
+body[data-path="/blog/"] article ul li::before,
+body[data-path="/articles"] article ul li::before,
+body[data-path="/articles/"] article ul li::before {
+  content: none;
+}
+body[data-path="/blog"] article ul li:last-of-type,
+body[data-path="/blog/"] article ul li:last-of-type,
+body[data-path="/articles"] article ul li:last-of-type,
+body[data-path="/articles/"] article ul li:last-of-type {
+  border-bottom: 1px solid var(--ink);
+}
 body[data-path="/blog"] article ul li:hover,
-body[data-path="/articles/"] article ul li:hover,
-body[data-path="/articles"] article ul li:hover {
-  box-shadow: var(--shadow-sm);
-  border-color: var(--stroke-default);
+body[data-path="/blog/"] article ul li:hover,
+body[data-path="/articles"] article ul li:hover,
+body[data-path="/articles/"] article ul li:hover {
+  background: rgba(192, 57, 43, 0.04);
 }
-
 body[data-path="/blog"] article ul li a,
-body[data-path="/articles/"] article ul li a,
-body[data-path="/articles"] article ul li a {
-  color: var(--text-primary);
+body[data-path="/blog/"] article ul li a,
+body[data-path="/articles"] article ul li a,
+body[data-path="/articles/"] article ul li a {
+  display: block;
+  font-family: var(--face-engraved);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-1);
   text-decoration: none;
-  font-weight: 600;
-  font-size: var(--font-size-400);
+  margin-bottom: var(--space-1);
+  line-height: 1.25;
 }
-
 body[data-path="/blog"] article ul li a:hover,
-body[data-path="/articles/"] article ul li a:hover,
-body[data-path="/articles"] article ul li a:hover {
-  color: var(--accent);
+body[data-path="/blog/"] article ul li a:hover,
+body[data-path="/articles"] article ul li a:hover,
+body[data-path="/articles/"] article ul li a:hover {
+  color: var(--vermillion);
 }
 
-/* ============================================================
-   About Page — Profile Layout
-   ============================================================ */
-.about-profile {
+/* The index intro paragraph(s) before the listing */
+body[data-path="/blog"] article > header h1,
+body[data-path="/blog/"] article > header h1,
+body[data-path="/articles"] article > header h1,
+body[data-path="/articles/"] article > header h1 {
+  font-size: 64px;
+}
+
+/* ==========================================================================
+   ABOUT — portrait frame on the left, letter on the right
+   ========================================================================== */
+.about-body {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--space-6);
+  align-items: start;
+  margin-top: var(--space-5);
+}
+.about-portrait {
+  border: 1px solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: 4px;
+  background: var(--paper-laid);
+  padding: var(--space-2);
+}
+.about-portrait .frame-inner {
+  background: var(--paper);
+  aspect-ratio: 3/4;
   display: flex;
-  gap: var(--spacing-xxxl);
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
-
-.about-avatar {
-  width: 160px;
-  height: 160px;
+.about-portrait .frame-inner img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center top;
-  border-radius: var(--radius-xl);
-  flex-shrink: 0;
-  box-shadow: var(--shadow-md);
+  mix-blend-mode: multiply;
+  display: block;
+  margin: 0;
+}
+.about-portrait .frame-cap {
+  text-align: center;
+  margin-top: var(--space-2);
+  font-family: var(--face-engraved);
+  font-size: 10px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+.about-letter h1 {
+  font-family: var(--face-fat);
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0 0 var(--space-1);
+  color: var(--fg-1);
+  text-align: left;
+}
+.about-letter .about-role {
+  font-family: var(--face-engraved);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin-bottom: var(--space-3);
+}
+.about-letter .salutation {
+  font-family: var(--face-script);
+  font-size: 30px;
+  color: var(--fg-script);
+  line-height: 1;
+  margin: var(--space-4) 0 var(--space-1);
+}
+.about-letter p {
+  font-family: var(--face-roman);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0 0 var(--space-3);
 }
 
-.about-bio {
-  padding-top: var(--spacing-xs);
+/* On the about page (data-path="/"), suppress the article header treatment
+   and let the .about-body grid do the layout. */
+body[data-path="/"] article > header { display: none; }
+
+/* ==========================================================================
+   404 — Returned to Sender envelope
+   ========================================================================== */
+.rts {
+  position: relative;
+  padding: var(--space-7) var(--space-4) var(--space-8);
+  text-align: center;
+}
+.rts .envelope {
+  width: 560px;
+  max-width: 100%;
+  margin: 0 auto;
+  border: 1px solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: 5px;
+  background: var(--paper-manila);
+  background-image:
+    repeating-linear-gradient(45deg,
+      transparent 0 9px,
+      rgba(192,57,43,0.75) 9px 12px,
+      transparent 12px 18px,
+      rgba(26,34,51,0.85) 18px 21px,
+      transparent 21px 30px);
+  padding: var(--space-4);
+  position: relative;
+}
+.rts .envelope-inside {
+  background: var(--paper-laid);
+  padding: var(--space-7) var(--space-5);
+  border: 1px solid var(--ink);
+  position: relative;
+}
+.rts .stamp-rts {
+  display: inline-block;
+  padding: 8px 18px 10px;
+  border: 4px double var(--vermillion);
+  color: var(--vermillion);
+  font-family: var(--face-engraved);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+  background: rgba(192,57,43,0.04);
+  margin-bottom: var(--space-6);
+}
+.rts .err-num {
+  font-family: var(--face-fat);
+  font-weight: 900;
+  font-size: 140px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--fg-1);
+  margin: 0;
+}
+.rts .err-msg {
+  font-family: var(--face-engraved);
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin: var(--space-3) 0 var(--space-4);
+}
+.rts .err-msg::before, .rts .err-msg::after {
+  content: '\2766';
+  margin: 0 10px;
+  font-family: serif;
+  color: var(--fg-3);
+}
+.rts .err-cite {
+  font-family: var(--face-roman);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 360px;
+  margin: 0 auto var(--space-5);
+  color: var(--fg-1);
+}
+.rts .err-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.rts .err-actions a {
+  font-family: var(--face-engraved);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  padding: 8px 16px;
+  color: var(--fg-1);
+  background: var(--paper);
+}
+.rts .err-actions a:hover { background: var(--ink); color: var(--paper); }
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 760px) {
+  body > main { padding: var(--space-4) var(--space-3) var(--space-7); }
+  body > header.masthead { padding: var(--space-4) var(--space-3) var(--space-3); }
+
+  .bm-trim { grid-template-columns: 1fr; gap: var(--space-2); text-align: center; padding-bottom: var(--space-3); }
+  .bm-trim-wordmark { font-size: 22px; }
+  .bm-trim-tag { display: none; }
+  .bm-nav { justify-content: center; }
+
+  article > header h1 { font-size: 36px; }
+  .art-body h2 { font-size: 15px; letter-spacing: 0.16em; margin-top: var(--space-6); }
+
+  .about-body { grid-template-columns: 1fr; gap: var(--space-4); }
+  .about-portrait { max-width: 200px; margin: 0 auto; }
+  .about-letter h1 { font-size: 36px; text-align: center; }
+  .about-letter .about-role { text-align: center; }
+
+  .rts .err-num { font-size: 96px; }
+  pre { margin-left: calc(var(--space-3) * -1); margin-right: calc(var(--space-3) * -1); }
 }
 
-@media (max-width: 640px) {
-  .about-profile {
-    flex-direction: column;
-    gap: var(--spacing-xxl);
-  }
-
-  .about-avatar {
-    width: 120px;
-    height: 120px;
-  }
-}
-
-/* ============================================================
-   Reduced Motion — Accessibility
-   ============================================================ */
+/* ==========================================================================
+   ACCESSIBILITY — reduced motion, focus rings
+   ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
 
-/* ============================================================
-   Focus Rings — WCAG 2.1 AA (Fluent 2: 2px solid + 2px offset)
-   ============================================================ */
 a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-#theme-toggle:focus-visible {
-  outline: 2px solid var(--text-primary);
+  outline: 2px solid var(--vermillion);
   outline-offset: 2px;
 }
-
 .skip-link:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--vermillion);
   outline-offset: 2px;
+}
+
+/* ==========================================================================
+   PRINT — engravings stay, paper goes white-ish for ink savings
+   ========================================================================== */
+@media print {
+  body { background: white; }
+  body > header.masthead, .art-back, .skip-link { display: none !important; }
+  pre, blockquote { break-inside: avoid; }
 }

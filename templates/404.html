@@ -3,37 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 Not Found</title>
-  <link rel="stylesheet" href="/css/blog.css">
-  <script type="module">
-    import { setTheme } from 'https://esm.sh/@fluentui/web-components@3.0.0-rc.9';
-    import { webLightTheme, webDarkTheme } from 'https://esm.sh/@fluentui/tokens@1.0.0-alpha.23';
-
-    function applyFluentTheme() {
-      var attr = document.documentElement.getAttribute('data-theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var isDark = attr === 'dark' || (!attr && prefersDark);
-      setTheme(isDark ? webDarkTheme : webLightTheme);
-    }
-
-    applyFluentTheme();
-
-    // Keep Fluent theme in sync with the data-theme toggle
-    new MutationObserver(applyFluentTheme)
-      .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-
-    // Also respond to system preference changes when no explicit theme is set
-    window.matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', applyFluentTheme);
-  </script>
+  <title>404 — Returned to Sender</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/css/blog.css?v=3">
 </head>
 <body>
+  <header class="masthead">
+    <div class="bm-trim">
+      <a href="/" class="bm-trim-wordmark">Goussev <span class="amp">&amp;</span> Co.</a>
+      <div class="bm-trim-tag">Notes from the workshop</div>
+      <nav class="bm-nav" aria-label="Site navigation">
+        <a href="/articles">Articles</a>
+      </nav>
+    </div>
+  </header>
+
   <main id="main-content">
-    <article>
-      <h1>404 Not Found</h1>
-      <p>The article you requested does not exist.</p>
-      <p><fluent-anchor-button href="/blog" appearance="subtle">← Back to articles</fluent-anchor-button></p>
-    </article>
+    <div class="rts">
+      <div class="envelope">
+        <div class="envelope-inside">
+          <div class="stamp-rts">Returned to Sender</div>
+          <p class="err-num">404</p>
+          <p class="err-msg">No such article in this archive</p>
+          <p class="err-cite">The page you requested does not exist. It may have been moved, renamed, or never written at all.</p>
+          <div class="err-actions">
+            <a href="/">Home</a>
+            <a href="/articles">Articles</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 </body>
 </html>

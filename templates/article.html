@@ -9,86 +9,76 @@
 {{end}}
 {{if not (fileExists $mdPath)}}{{httpError 404}}{{end}}
 {{$doc := include $mdPath | splitFrontMatter}}
+{{$isAbout  := eq $origPath "/"}}
+{{$isIndex  := or (eq $origPath "/blog") (eq $origPath "/blog/") (eq $origPath "/articles") (eq $origPath "/articles/")}}
+{{$isArticle := and (not $isAbout) (not $isIndex)}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>
-    (function() {
-      var saved = localStorage.getItem('blog-theme');
-      if (saved) {
-        document.documentElement.setAttribute('data-theme', saved);
-      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
-    })();
-  </script>
   <title>{{$doc.Meta.title}}</title>
   <meta property="og:title" content="{{$doc.Meta.title}}">
   <meta property="og:type" content="article">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/blog.css?v=2">
+  <link rel="stylesheet" href="/css/blog.css?v=3">
   <link rel="stylesheet" href="/css/syntax.css">
-  <script type="module">
-    import { setTheme } from 'https://esm.sh/@fluentui/web-components@3.0.0-rc.9';
-    import { webLightTheme, webDarkTheme } from 'https://esm.sh/@fluentui/tokens@1.0.0-alpha.23';
-
-    function applyFluentTheme() {
-      var attr = document.documentElement.getAttribute('data-theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var isDark = attr === 'dark' || (!attr && prefersDark);
-      setTheme(isDark ? webDarkTheme : webLightTheme);
-    }
-
-    applyFluentTheme();
-
-    // Keep Fluent theme in sync with the data-theme toggle
-    new MutationObserver(applyFluentTheme)
-      .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-
-    // Also respond to system preference changes when no explicit theme is set
-    window.matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', applyFluentTheme);
-  </script>
 </head>
 <body data-path="{{$origPath}}">
   <a href="#main-content" class="skip-link">Skip to main content</a>
-  <nav aria-label="Site navigation">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">Home</a>
-      <div class="nav-links">
-        <a href="/blog">Blog</a>
-        <button id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark mode">
-          <i data-lucide="moon" aria-hidden="true"></i>
-          <i data-lucide="sun" aria-hidden="true"></i>
-        </button>
-      </div>
+
+  <header class="masthead">
+    <div class="bm-trim">
+      <a href="/" class="bm-trim-wordmark">Goussev <span class="amp">&amp;</span> Co.</a>
+      <div class="bm-trim-tag">Notes from the workshop</div>
+      <nav class="bm-nav" aria-label="Site navigation">
+        <a href="/articles"{{if $isIndex}} class="cur"{{end}}>Articles</a>
+      </nav>
     </div>
-  </nav>
+  </header>
+
   <main id="main-content">
-    <article>
+    <article class="art-wrap">
       <header>
+        {{if $isArticle}}<div class="art-eyebrow">From the desk of</div>{{end}}
         <h1>{{$doc.Meta.title}}</h1>
-        {{if $doc.Meta.date}}<fluent-badge appearance="ghost" size="small"><time datetime="{{$doc.Meta.date}}">{{$doc.Meta.date}}</time></fluent-badge>{{end}}
+        {{if and $isArticle $doc.Meta.date}}
+          {{$parts := splitList "-" $doc.Meta.date}}
+          {{$yr := index $parts 0}}
+          {{$mo := index $parts 1}}
+          {{$day := index $parts 2}}
+          {{$months := dict "01" "JAN" "02" "FEB" "03" "MAR" "04" "APR" "05" "MAY" "06" "JUN" "07" "JUL" "08" "AUG" "09" "SEP" "10" "OCT" "11" "NOV" "12" "DEC"}}
+          {{$moName := index $months $mo}}
+          <div class="art-meta">
+            <div class="date-stamp-lg">
+              <span class="city">Montréal</span>
+              <span class="mo">{{$moName}}</span>
+              <span class="day">{{$day}}</span>
+              <span class="yr">{{$yr}}</span>
+            </div>
+          </div>
+        {{end}}
       </header>
-      {{markdown $doc.Body}}
+
+      <section class="art-body">
+        {{markdown $doc.Body}}
+      </section>
+
+      {{if $isArticle}}
+        <footer class="art-closing">
+          <div class="closing-orn">· · ·</div>
+          <div class="yours">Yours,</div>
+          <div class="signature">
+            <div class="name">Iouri</div>
+            <div class="role">Systems Engineer · Montréal</div>
+          </div>
+          <div class="art-back">
+            <a href="/articles">← Back to articles</a>
+          </div>
+        </footer>
+      {{end}}
     </article>
   </main>
-
-
-  <script>
-    var btn = document.getElementById('theme-toggle');
-    btn.addEventListener('click', function() {
-      var current = document.documentElement.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('blog-theme', next);
-    });
-  </script>
-  <script src="/scripts/lucide.min.js"></script>
-  <script>lucide.createIcons();</script>
 </body>
 </html>

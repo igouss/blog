@@ -1,0 +1,37 @@
+{
+  "template": "fluent2",
+  "templateName": "Fluent 2 Design System",
+  "description": "",
+  "branch": "main",
+  "phases": [
+    {
+      "name": "audit",
+      "index": 0,
+      "status": "active"
+    },
+    {
+      "name": "setup",
+      "index": 1,
+      "status": "pending"
+    },
+    {
+      "name": "design-contract",
+      "index": 2,
+      "status": "pending"
+    },
+    {
+      "name": "implement",
+      "index": 3,
+      "status": "pending"
+    },
+    {
+      "name": "uat",
+      "index": 4,
+      "status": "pending"
+    }
+  ],
+  "currentPhase": 0,
+  "startedAt": "2026-03-30T06:44:51.816Z",
+  "updatedAt": "2026-03-30T06:44:51.816Z",
+  "artifactDir": "/home/elendal/IdeaProjects/blog/.gsd/workflows/fluent2/260330-1-fluent2"
+}

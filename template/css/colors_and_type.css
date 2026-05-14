@@ -1,0 +1,381 @@
+/* =========================================================================
+   GOUSSEV & CO. — colors_and_type.css
+   Single-ink commercial lithography, c. 1901, applied to modern engineering.
+   ========================================================================= */
+
+/* ---- Fonts ---------------------------------------------------------------
+   Period faces are not on Google Fonts. The substitutes below are calibrated
+   matches by category. The user should swap in genuine ATF/wood-type revivals
+   (e.g. HWT Mardell, P22 Stickley, Wells Grotesque, Filmotype Lacrosse)
+   for final production. Flagged in README.md.
+   --------------------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@0;1&family=IM+Fell+DW+Pica+SC&family=IM+Fell+English:ital@0;1&family=Playfair+Display:wght@700;900&family=Rye&family=Pinyon+Script&family=Petit+Formal+Script&family=Special+Elite&family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  /* ===== INK PALETTE (single-ink lithography, period-correct) =================
+     Order of precedence per the design notes:
+       1. Dark blue-black is the DEFAULT body ink (Lippmann Bros. uses this).
+       2. Sepia is the alt for warmer or "earlier" pieces.
+       3. Vermillion is the postal/cancellation accent — used sparingly.
+       4. Aniline purple is rubber-stamp ink — date stamps, "RECEIVED" marks.
+     Two-ink work is RED+BLACK or BLUE+GOLD — anything else is anachronism.
+     ============================================================================ */
+  --ink:               #1a2233;   /* primary blue-black, the dominant ink */
+  --ink-soft:          #2c3852;   /* lighter pass / shadow text */
+  --ink-faded:         #5a6478;   /* aged, weakened lines (~70 yrs of UV) */
+  --ink-ghost:         #8a8a8a;   /* very faint registration marks */
+
+  --sepia:             #5b3a1a;   /* warm brown alt ink */
+  --sepia-soft:        #7a5a3a;
+  --sepia-faded:       #a48462;
+
+  --vermillion:        #c0392b;   /* 2c Washington stamp red, postal */
+  --vermillion-soft:   #d65a4a;
+  --aniline-purple:    #5a3a86;   /* rubber-stamp date ink */
+
+  /* ===== PAPER (substrate) ===================================================
+     Wove or laid bond, cream-to-manila, with subtle foxing and edge darkening.
+     The "paper" tokens are the BACKGROUND colors of the document. Pure white
+     is wrong before 1920 — never use it.
+     ============================================================================ */
+  --paper:             #f2e8d2;   /* warm cream wove, 24-lb bond */
+  --paper-laid:        #ebdfc0;   /* slightly darker, "premium" laid */
+  --paper-manila:      #e5d3a8;   /* envelope / kraft manila */
+  --paper-edge:        #d6c195;   /* darker at margins (UV exposure) */
+  --foxing:            #c9a07a;   /* tea-stain spots, low opacity */
+  --foxing-deep:       #8a6038;   /* heavy water damage / age spot */
+
+  /* ===== SEMANTIC ROLES ======================================================
+     These are the names the rest of the system pulls from. Components should
+     never reference an --ink-* token directly — go through these.
+     ============================================================================ */
+  --fg-1:              var(--ink);          /* body copy, primary */
+  --fg-2:              var(--ink-soft);     /* secondary, captions */
+  --fg-3:              var(--ink-faded);    /* tertiary, rule-of-thumb dimming */
+  --fg-script:         var(--aniline-purple); /* handwritten / Spencerian ink */
+  --fg-stamp:          var(--vermillion);   /* postal accent, "REQUIRED" badges */
+  --fg-cancel:         var(--aniline-purple); /* date stamps, system timestamps */
+  --fg-alt:            var(--sepia);        /* warm-tone alt heading */
+
+  --bg-page:           var(--paper);
+  --bg-card:           var(--paper-laid);
+  --bg-envelope:       var(--paper-manila);
+  --bg-emphasis:       #e0d2a8;             /* "highlighted row" — see safe-rate table in reference */
+
+  --rule:              var(--ink);          /* default rule weight */
+  --rule-soft:         #6b5a3a;             /* faded ornamental rule */
+
+  /* ===== TYPE SCALE ==========================================================
+     Hierarchy is by FACE-CATEGORY first, then size. There is no modular scale
+     in the modern sense — each piece of information picks the face that suits
+     its rhetorical job (per the design notes, §2.2).
+     ============================================================================ */
+
+  /* The six face categories from the design notes: */
+  --face-fat:          'Playfair Display', 'IM Fell DW Pica', serif;
+                        /* fat-face modern display — wordmarks, "FINANCIAL FREEDOM" */
+  --face-wood:         'Rye', 'IM Fell DW Pica', serif;
+                        /* Tuscan / wood type — section banderoles, "FRUITS AND PRODUCE" */
+  --face-engraved:     'Cinzel', 'IM Fell DW Pica SC', 'IM Fell DW Pica', serif;
+                        /* condensed gothic / engraved caps — section labels, addresses */
+  --face-roman:        'IM Fell DW Pica', 'IM Fell English', Georgia, serif;
+                        /* old-style book roman — body copy */
+  --face-italic:       'IM Fell DW Pica', Georgia, serif;
+                        /* italic small caps — partner names ("Samuel Lippmann") */
+                        /* (use font-style: italic + font-variant: small-caps) */
+  --face-script:       'Pinyon Script', 'Petit Formal Script', cursive;
+                        /* engrosser's script — closings, handwritten notes */
+  --face-typewriter:   'Special Elite', 'Courier Prime', ui-monospace, monospace;
+                        /* not period (1901-correct is engrosser's script) — */
+                        /* used as the engineer's machine output, post-1920 vibe */
+  --face-mono:         'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+                        /* code blocks, terminal output — the engineer's medium */
+
+  /* Sizes — period letterheads have NO modular scale. These are anchor sizes;
+     individual elements can and should deviate. */
+  --size-marquee:      96px;   /* the company name, biggest thing on the page */
+  --size-display:      56px;   /* secondary headlines, "PLAN FOR" lines */
+  --size-banderole:    34px;   /* ribbon-housed trade descriptors */
+  --size-h1:           28px;   /* section heads */
+  --size-h2:           20px;   /* sub-section heads, badge labels */
+  --size-h3:           15px;   /* table headers, small caps */
+  --size-body:         16px;   /* body copy */
+  --size-body-sm:      14px;   /* captions, footnotes */
+  --size-fine:         12px;   /* "PULL EITHER WIRE", legal */
+  --size-mono:         13.5px; /* code default */
+
+  /* ===== TRACKING ============================================================
+     Display type is FITTED TIGHT (letters touch or overlap). Small caps and
+     gothic addresses are letterspaced WIDE. Loose tracking on display text
+     reads as modern and is wrong.
+     ============================================================================ */
+  --track-fat:         -0.02em;   /* display, fitted tight */
+  --track-wood:         0.01em;
+  --track-engraved:     0.12em;   /* engraved caps, wide tracking */
+  --track-engraved-wide: 0.28em;  /* punishingly wide, addresses */
+  --track-body:         0;
+  --track-script:       0;
+
+  /* ===== LEADING (line-height) =============================================== */
+  --lead-display:       0.95;
+  --lead-banderole:     1.05;
+  --lead-body:          1.55;     /* generous, period book setting */
+  --lead-script:        1.35;
+  --lead-mono:          1.55;
+
+  /* ===== STRUCTURAL TOKENS ===================================================
+     1901 stationery has no border-radius (rounded corners are a 1960s thing on
+     paper, much later on screen). Hairlines are 1px or 2px. Decorative rules
+     are heavier and use printer's ornaments.
+     ============================================================================ */
+  --radius-none:       0;
+  --radius-hair:       1px;        /* the absolute maximum; effectively a sharp corner */
+
+  --rule-hair:         1px solid var(--ink);
+  --rule-hair-soft:    1px solid var(--rule-soft);
+  --rule-double:       3px double var(--ink);
+  --rule-heavy:        2px solid var(--ink);
+
+  /* No drop shadows. Period.
+     Lithography is flat. Use line-built density (hatching) for depth instead. */
+  --shadow-none:       none;
+  /* The one exception: deep-press emboss on premium stationery (steel-die
+     engraving leaves a raised ink surface). Approximate it like this: */
+  --shadow-engrave:    inset 0 1px 0 rgba(255,250,235,0.6), 0 1px 0 rgba(26,34,51,0.15);
+
+  /* Spacing rhythm — based on a 6pt em grid */
+  --space-1:           4px;
+  --space-2:           8px;
+  --space-3:           12px;
+  --space-4:           16px;
+  --space-5:           24px;
+  --space-6:           32px;
+  --space-7:           48px;
+  --space-8:           64px;
+
+  /* Margins for "letterhead block" composition */
+  --margin-masthead:   var(--space-7);
+  --margin-section:    var(--space-6);
+  --margin-paragraph:  var(--space-4);
+}
+
+/* ==========================================================================
+   PAPER BACKGROUND
+   The full-page paper texture. Use on <body> or your top-level container.
+   Layered radial gradients fake aging, foxing, and edge darkening — single
+   shorthand, no PNG required. Combine with a real paper texture later.
+   ========================================================================== */
+.paper {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 14% 22%, rgba(201,160,122,0.18) 0%, transparent 30%),
+    radial-gradient(ellipse at 88% 18%, rgba(138, 96, 56, 0.10) 0%, transparent 28%),
+    radial-gradient(ellipse at 78% 78%, rgba(201,160,122,0.20) 0%, transparent 32%),
+    radial-gradient(ellipse at 8% 84%, rgba(138, 96, 56, 0.08) 0%, transparent 22%),
+    radial-gradient(ellipse at 50% 50%, rgba(242,232,210,0) 60%, rgba(214,193,149,0.45) 100%);
+  background-attachment: fixed;
+}
+
+.paper-laid {
+  /* laid paper has visible parallel chain-lines from the papermaking screen */
+  background-color: var(--paper-laid);
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      transparent 0px,
+      transparent 23px,
+      rgba(91,58,26,0.04) 23px,
+      rgba(91,58,26,0.04) 24px
+    ),
+    radial-gradient(ellipse at 30% 20%, rgba(201,160,122,0.15) 0%, transparent 40%),
+    radial-gradient(ellipse at 70% 80%, rgba(201,160,122,0.18) 0%, transparent 40%);
+}
+
+.paper-manila {
+  background-color: var(--paper-manila);
+  background-image:
+    radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(138,96,56,0.18) 100%);
+}
+
+/* ==========================================================================
+   SEMANTIC TYPOGRAPHY
+   Map period categories onto semantic HTML so a normal markdown render of a
+   README looks correct.
+   ========================================================================== */
+
+body {
+  font-family: var(--face-roman);
+  font-size: var(--size-body);
+  line-height: var(--lead-body);
+  color: var(--fg-1);
+  background: var(--bg-page);
+}
+
+/* Marquee: the "FINANCIAL FREEDOM" / "GOUSSEV & CO." treatment */
+.marquee, h1.marquee {
+  font-family: var(--face-fat);
+  font-weight: 900;
+  font-size: var(--size-marquee);
+  letter-spacing: var(--track-fat);
+  line-height: var(--lead-display);
+  color: var(--fg-1);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Wood-type banderole headline */
+.wood, h1.wood {
+  font-family: var(--face-wood);
+  font-size: var(--size-banderole);
+  letter-spacing: var(--track-wood);
+  line-height: var(--lead-banderole);
+  text-transform: uppercase;
+  color: var(--fg-1);
+}
+
+/* Engraved caps — section header in a panel */
+h1, h2, .engraved {
+  font-family: var(--face-engraved);
+  font-weight: 700;
+  letter-spacing: var(--track-engraved);
+  text-transform: uppercase;
+  color: var(--fg-1);
+}
+h1 { font-size: var(--size-h1); margin: 0 0 var(--space-4); }
+h2 { font-size: var(--size-h2); margin: var(--space-6) 0 var(--space-3); }
+
+/* Address-style ultra-wide engraved caps */
+.address-line {
+  font-family: var(--face-engraved);
+  text-transform: uppercase;
+  letter-spacing: var(--track-engraved-wide);
+  font-size: var(--size-h3);
+  color: var(--fg-2);
+}
+
+/* Italic small-caps for partner names */
+.partner {
+  font-family: var(--face-roman);
+  font-style: italic;
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+  color: var(--fg-2);
+}
+
+/* Body roman */
+p, li {
+  font-family: var(--face-roman);
+  font-size: var(--size-body);
+  line-height: var(--lead-body);
+  margin: 0 0 var(--margin-paragraph);
+  text-wrap: pretty;
+}
+
+/* Engrosser's script — closings, handwritten notes */
+.script, .signature {
+  font-family: var(--face-script);
+  color: var(--fg-script);
+  font-size: 26px;
+  line-height: var(--lead-script);
+}
+
+/* Inline italic — bookish, period-correct emphasis */
+em, i {
+  font-family: var(--face-roman);
+  font-style: italic;
+  color: var(--fg-1);
+}
+
+/* Bold — period letterheads use it heavily for company names */
+strong, b {
+  font-family: var(--face-roman);
+  font-weight: 700;
+}
+
+/* Code — the modern engineer's voice. Not period-correct; that's the point. */
+code, kbd, samp {
+  font-family: var(--face-mono);
+  font-size: var(--size-mono);
+  color: var(--fg-1);
+  background: rgba(26,34,51,0.06);
+  padding: 1px 4px;
+  border: 1px solid rgba(26,34,51,0.12);
+}
+
+pre {
+  font-family: var(--face-mono);
+  font-size: var(--size-mono);
+  line-height: var(--lead-mono);
+  color: var(--fg-1);
+  background: transparent;
+  padding: var(--space-4);
+  border: 1px solid var(--ink);
+  overflow-x: auto;
+}
+pre code { background: transparent; border: 0; padding: 0; }
+
+/* Typewriter — the "telegram" or "machine output" treatment */
+.typewriter, .telegram {
+  font-family: var(--face-typewriter);
+  font-size: var(--size-body-sm);
+  letter-spacing: 0.02em;
+  color: var(--fg-cancel);
+}
+
+/* Tabular figures — for ledger columns */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Date-stamp treatment — rubber-stamped over a pre-printed line */
+.date-stamp {
+  font-family: var(--face-engraved);
+  color: var(--fg-cancel);
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-block;
+  transform: rotate(-1.5deg);
+}
+
+/* Links — discreet; period letterheads don't have links, but if we must */
+a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+a:hover { color: var(--vermillion); }
+
+/* ==========================================================================
+   STRUCTURAL ELEMENTS
+   ========================================================================== */
+hr {
+  border: 0;
+  border-top: var(--rule-hair);
+  margin: var(--space-5) 0;
+}
+hr.double { border: 0; border-top: var(--rule-double); }
+hr.heavy  { border: 0; border-top: var(--rule-heavy); }
+
+blockquote {
+  font-family: var(--face-roman);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.5;
+  margin: var(--space-5) 0;
+  padding-left: var(--space-5);
+  border-left: 0;
+  color: var(--fg-1);
+  position: relative;
+}
+blockquote::before {
+  content: "\201C";  /* big curly opening quote */
+  font-family: var(--face-fat);
+  font-size: 64px;
+  color: var(--fg-2);
+  position: absolute;
+  left: -8px;
+  top: -12px;
+  line-height: 1;
+}

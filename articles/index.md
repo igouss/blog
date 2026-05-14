@@ -5,6 +5,7 @@ title: "elendal's blog"
 Writing about systems, tools, and the occasional rabbit hole.
 
 ## Articles
+- [Private DNS and a TLS gateway for .homelab domains](/articles/homelab-dns-gateway) — Unbound recursive resolver with a `.homelab` zone, Caddy's internal CA for TLS, a virtual IP to dodge Tailscale's port 443, and auto-registration via Quadlet lifecycle hooks.
 - [Killing a 1892-line god function in GSD-2](/articles/gsd-auto-loop-refactor) — four-PR sequence dismantling the `autoLoop` god function: code smells, mechanical cleanup, behavioral tests, pipeline extraction, and module split.
 - [Automated PR reviews with Claude Code in a self-hosted Forgejo](/articles/claude-review-forgejo) — runners as rootless Podman pods with Tailscale sidecar, composite action injecting OAuth credentials, and five things that don't work.
 - [Migrating services from Caddy subpaths to Tailscale sidecars](/articles/caddy-subpath-to-tailscale-sidecar) — five non-obvious problems migrating openvscode-server, Gatus, and copyparty from Caddy reverse proxy subpaths to Tailscale sidecar pods.

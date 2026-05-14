@@ -1,0 +1,447 @@
+/* Local helpers for the letterhead UI kit. The actual brand tokens come
+   from the parent ../../colors_and_type.css; this file adds *layout*
+   helpers specific to the broadside layout. */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #c2b08a;  /* darker wood-desk surround behind the page */
+  font-family: var(--face-roman);
+  color: var(--fg-1);
+  min-height: 100vh;
+  padding: 28px 0 60px;
+}
+
+.page {
+  width: 880px;
+  margin: 0 auto;
+  padding: 36px 56px 48px;
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 12% 14%, rgba(201,160,122,0.20) 0%, transparent 30%),
+    radial-gradient(ellipse at 90% 12%, rgba(138, 96, 56, 0.14) 0%, transparent 28%),
+    radial-gradient(ellipse at 84% 88%, rgba(201,160,122,0.22) 0%, transparent 32%),
+    radial-gradient(ellipse at 8% 86%, rgba(138, 96, 56, 0.12) 0%, transparent 25%),
+    radial-gradient(ellipse at 50% 50%, rgba(242,232,210,0) 55%, rgba(214,193,149,0.45) 100%);
+  /* very subtle "deckle / paper edge" effect */
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.05),
+    0 0 0 1px rgba(91, 58, 26, 0.10),
+    0 18px 40px -16px rgba(0,0,0,0.35);
+  position: relative;
+}
+
+/* ---- engraving image treatment ---------------------------------------- */
+.engraving {
+  /* engraving PNGs come with the cream paper baked in; blending lifts the
+     paper out so they sit on whatever paper substrate they're placed on. */
+  mix-blend-mode: multiply;
+  filter: contrast(1.05);
+}
+
+/* ---- masthead --------------------------------------------------------- */
+/* Three-column composition matching the reference:
+   LEFT  ~ 44%  — PLAN FOR + marquee + script tagline
+   CENTER ~ 26% — "From the desk of" + signed name + role line
+   RIGHT ~ 30% — train illustration + postage stamp + cancel
+*/
+.masthead {
+  display: grid;
+  grid-template-columns: 1.5fr 1.05fr 0.9fr;
+  gap: 14px;
+  align-items: start;
+  position: relative;
+  min-height: 180px;
+  margin-bottom: 0;
+}
+.masthead .col-left  { text-align: left; }
+.masthead .col-mid   { text-align: center; padding-top: 18px; position: relative; }
+.masthead .col-right { text-align: right; position: relative; min-height: 160px; }
+
+.masthead .plan-for {
+  font-family: var(--face-engraved);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+.masthead .plan-for::before, .masthead .plan-for::after {
+  content: '\2766';
+  margin: 0 8px;
+  font-family: serif;
+  font-size: 14px;
+  vertical-align: -1px;
+}
+.masthead h1 {
+  font-family: var(--face-fat);
+  font-weight: 900;
+  font-size: 58px;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 6px 0 2px;
+  color: var(--fg-1);
+}
+.masthead .tagline {
+  font-family: var(--face-script);
+  font-size: 28px;
+  color: var(--fg-script);
+  line-height: 1.1;
+  margin-top: 4px;
+}
+.masthead .tagline em {
+  font-family: var(--face-script);
+  font-style: normal;
+}
+
+.masthead .deskof-label {
+  font-family: var(--face-roman);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--fg-2);
+}
+.masthead .deskof-name {
+  font-family: var(--face-fat);
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin-top: 2px;
+  color: var(--fg-1);
+  line-height: 1;
+}
+.masthead .deskof-name::before, .masthead .deskof-name::after {
+  content: '\2014';
+  color: var(--fg-2);
+  margin: 0 6px;
+  font-weight: 400;
+}
+.masthead .deskof-role {
+  font-family: var(--face-engraved);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin-top: 6px;
+}
+.masthead .deskof-role .small {
+  font-family: serif;
+  font-size: 12px;
+  color: var(--fg-2);
+}
+
+/* Postal corner: stamp + cancel sit at the top edge, clean, no overlap. */
+.masthead .postal-corner {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 8px;
+  min-height: 78px;
+}
+.masthead .cancel {
+  width: 76px;
+  opacity: 0.9;
+  transform: rotate(-3deg);
+  margin-top: 6px;
+}
+.masthead .stamp {
+  width: 64px;
+  transform: rotate(4deg);
+}
+/* Train sits underneath the postal corner, full column width. */
+.masthead .train {
+  width: 100%;
+  max-width: 260px;
+  display: block;
+  margin-left: auto;
+}
+.masthead-rule {
+  margin: 22px 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink);
+}
+.masthead-rule .line { flex: 1; height: 1px; background: var(--ink); }
+.masthead-rule .orn { font-family: serif; font-size: 22px; line-height: 1; }
+.address-line {
+  text-align: center;
+  font-family: var(--face-engraved);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+/* ---- banderole -------------------------------------------------------- */
+.banderole {
+  display: inline-block;
+  padding: 10px 44px 12px;
+  background: var(--ink);
+  color: var(--paper);
+  clip-path: polygon(0 30%, 8% 0, 92% 0, 100% 30%, 100% 70%, 92% 100%, 8% 100%, 0 70%);
+  font-family: var(--face-wood);
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  position: relative;
+}
+.banderole.tuscan { font-family: var(--face-wood); }
+.banderole.engraved {
+  font-family: var(--face-engraved);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  padding: 8px 36px 10px;
+}
+
+/* ---- rule frames ------------------------------------------------------ */
+.frame {
+  border: 1px solid var(--ink);
+  padding: 14px 18px;
+  background: rgba(235, 223, 192, 0.55); /* faint laid wash */
+  position: relative;
+}
+.frame.double {
+  outline: 1px solid var(--ink);
+  outline-offset: 4px;
+}
+.frame > .frame-title {
+  font-family: var(--face-engraved);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--fg-1);
+  margin-bottom: 10px;
+}
+.frame > .frame-title::before, .frame > .frame-title::after {
+  content: '\2605';
+  font-family: serif;
+  margin: 0 8px;
+  color: var(--fg-2);
+}
+.frame > .frame-sub {
+  font-family: var(--face-roman);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--fg-2);
+  text-align: center;
+  margin-top: -8px;
+  margin-bottom: 10px;
+}
+
+/* ---- date stamp ------------------------------------------------------- */
+.datestamp-circle {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 2px double var(--aniline-purple);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--aniline-purple);
+  font-family: var(--face-engraved);
+  transform: rotate(-3deg);
+  text-align: center;
+  flex-shrink: 0;
+}
+.datestamp-circle .top   { font-size: 9px; letter-spacing: 0.20em; }
+.datestamp-circle .date  { font-size: 12px; font-weight: 700; margin: 2px 0; }
+.datestamp-circle .bottom{ font-size: 9px; letter-spacing: 0.12em; }
+
+/* ---- signature -------------------------------------------------------- */
+.signature {
+  text-align: right;
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 3px double var(--ink);
+}
+.signature .yours {
+  font-family: var(--face-roman);
+  font-style: italic;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.signature .name {
+  font-family: var(--face-script);
+  font-size: 50px;
+  color: var(--fg-script);
+  line-height: 1;
+  margin-right: 36px;
+}
+.signature .role {
+  font-family: var(--face-engraved);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin-top: 6px;
+}
+
+/* ---- trade badge ------------------------------------------------------ */
+.tradebadge {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  outline: 1px solid var(--ink);
+  outline-offset: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-laid);
+  text-align: center;
+  flex-shrink: 0;
+}
+.tradebadge .label {
+  font-family: var(--face-engraved);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+.tradebadge .big {
+  font-family: var(--face-fat);
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 1;
+  margin: 4px 0 2px;
+}
+
+/* ---- ledger ----------------------------------------------------------- */
+.ledger {
+  width: 100%;
+  font-family: var(--face-roman);
+  font-size: 13.5px;
+  border-collapse: collapse;
+  color: var(--fg-1);
+}
+.ledger thead tr {
+  font-family: var(--face-engraved);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+.ledger th, .ledger td {
+  padding: 5px 4px;
+  text-align: left;
+}
+.ledger thead th { border-bottom: 1px solid var(--ink); }
+.ledger td.num, .ledger th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-style: italic;
+}
+.ledger tr.emphasis { background: var(--bg-emphasis); }
+.ledger tr.emphasis td { font-weight: 700; }
+
+/* ---- telegram --------------------------------------------------------- */
+.telegram {
+  font-family: var(--face-typewriter);
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+  line-height: 1.7;
+  color: var(--fg-cancel);
+  border: 1px dashed var(--rule-soft);
+  background: rgba(90,58,134,0.04);
+  padding: 12px 16px;
+}
+.telegram .head {
+  font-family: var(--face-typewriter);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--fg-cancel);
+  border-bottom: 1px dashed var(--rule-soft);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+/* ---- icon row --------------------------------------------------------- */
+.iconrow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  text-align: center;
+  margin: 16px 0 4px;
+}
+.iconrow .ic img { height: 80px; }
+.iconrow .ic .lab {
+  font-family: var(--face-engraved);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ---- columns / two-col ------------------------------------------------ */
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin: 18px 0;
+}
+.row.three { grid-template-columns: repeat(3, 1fr); }
+.row.investment-cols { grid-template-columns: 1fr 1.1fr; }
+
+/* ---- body paragraphs -------------------------------------------------- */
+.body p {
+  font-family: var(--face-roman);
+  font-size: 14.5px;
+  line-height: 1.55;
+  margin: 0 0 10px;
+  text-wrap: pretty;
+}
+.body p.italic { font-style: italic; }
+
+/* ---- decorative rule -------------------------------------------------- */
+.dec-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0;
+  color: var(--ink);
+}
+.dec-rule .line { flex: 1; height: 1px; background: var(--ink); }
+.dec-rule .orn  { font-family: serif; font-size: 22px; line-height: 1; }
+
+/* ---- big numerals (right-side WHY block in the reference) ------------- */
+.bignum {
+  font-family: var(--face-fat);
+  font-weight: 900;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--fg-1);
+  letter-spacing: -0.01em;
+}
+
+/* ---- sequence circles (the 1 / 2 / 3 / 4 in the reference) ------------ */
+.seqnum {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--face-fat);
+  font-weight: 900;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+/* ---- script asides ---------------------------------------------------- */
+.script-aside {
+  font-family: var(--face-script);
+  color: var(--fg-script);
+  font-size: 22px;
+  line-height: 1.3;
+}

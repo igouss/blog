@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Claude Code</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #282c34; display: flex; flex-direction: column; height: 100dvh; }
+    iframe { flex: 1; border: none; width: 100%; min-width: 0; display: block; }
+    #keys {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 3px;
+      padding: 4px;
+      background: #1d1f21;
+    }
+    button {
+      background: #3a3f4b;
+      color: #c5c8c6;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 0;
+      font-size: 14px;
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+    button:active { background: #81a2be; color: #282c34; }
+  </style>
+</head>
+<body>
+  <iframe id="term" src="/code-term/"></iframe>
+  <div id="keys">
+    <button onclick="send('\x01')">C-a</button>
+    <button onclick="send('\x1b')">Esc</button>
+    <button onclick="send('\x1b[A')">▲</button>
+    <button onclick="send('\t')">Tab</button>
+    <button onclick="send('\x7f')">⌫</button>
+    <button onclick="send('\x1b[D')">◀</button>
+    <button onclick="send('\x1b[B')">▼</button>
+    <button onclick="send('\x1b[C')">▶</button>
+    <button onclick="send('\r')">↵</button>
+    <button onclick="send('\x03')">C-c</button>
+  </div>
+  <script>
+    function send(seq) {
+      const doc = document.getElementById('term').contentDocument;
+      const ta = doc && doc.querySelector('textarea');
+      if (!ta) return;
+      ta.focus();
+      // xterm.js listens for 'input' event on its textarea
+      const nativeInputSetter = Object.getOwnPropertyDescriptor(window.frames[0].HTMLTextAreaElement.prototype, 'value').set;
+      nativeInputSetter.call(ta, seq);
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  </script>
+</body>
+</html>

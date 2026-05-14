@@ -1,0 +1,45 @@
+<svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif">
+  <defs>
+    <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#888"/></marker>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d4943a"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#1a1a1a" rx="8"/>
+  <text x="200" y="18" fill="#888" font-size="11" text-anchor="middle">DNS resolution</text>
+  <rect x="5" y="26" width="100" height="44" rx="7" fill="none" stroke="#d4943a" stroke-width="2"/>
+  <text x="55" y="45" fill="#d4943a" font-size="12" font-weight="600" text-anchor="middle">Browser</text>
+  <text x="55" y="60" fill="#888" font-size="10" text-anchor="middle">status.homelab</text>
+  <path d="M105,48 L130,48" stroke="#999" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
+  <rect x="130" y="26" width="90" height="44" rx="7" fill="none" stroke="#777" stroke-width="1.5"/>
+  <text x="175" y="45" fill="#b0b0b0" font-size="12" font-weight="600" text-anchor="middle">AdGuard</text>
+  <text x="175" y="60" fill="#888" font-size="10" text-anchor="middle">:53 filtering</text>
+  <path d="M220,48 L245,48" stroke="#999" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
+  <rect x="245" y="26" width="100" height="44" rx="7" fill="none" stroke="#777" stroke-width="1.5"/>
+  <text x="295" y="45" fill="#b0b0b0" font-size="12" font-weight="600" text-anchor="middle">Unbound</text>
+  <text x="295" y="60" fill="#888" font-size="10" text-anchor="middle">:5353 DoT+cache</text>
+  <path d="M345,48 L370,48" stroke="#999" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
+  <rect x="370" y="26" width="120" height="44" rx="7" fill="none" stroke="#d4943a" stroke-width="2"/>
+  <text x="430" y="45" fill="#d4943a" font-size="12" font-weight="600" text-anchor="middle">.homelab zone</text>
+  <text x="430" y="60" fill="#888" font-size="10" text-anchor="middle">→ 10.99.0.1</text>
+  <path d="M295,70 L295,91" stroke="#999" stroke-width="1.5" fill="none" marker-end="url(#a1)"/>
+  <rect x="245" y="91" width="100" height="34" rx="6" fill="none" stroke="#777" stroke-width="1.5"/>
+  <text x="295" y="106" fill="#888" font-size="10" text-anchor="middle">Cloudflare / Quad9</text>
+  <text x="295" y="118" fill="#888" font-size="10" text-anchor="middle">TLS :853</text>
+  <text x="200" y="154" fill="#888" font-size="11" text-anchor="middle">HTTPS request</text>
+  <rect x="5" y="162" width="100" height="44" rx="7" fill="none" stroke="#d4943a" stroke-width="2"/>
+  <text x="55" y="181" fill="#d4943a" font-size="12" font-weight="600" text-anchor="middle">Browser</text>
+  <text x="55" y="196" fill="#888" font-size="10" text-anchor="middle">10.99.0.1:443</text>
+  <path d="M105,184 L130,184" stroke="#d4943a" stroke-width="2" fill="none" marker-end="url(#a2)"/>
+  <rect x="130" y="162" width="100" height="44" rx="7" fill="none" stroke="#d4943a" stroke-width="2"/>
+  <text x="180" y="181" fill="#d4943a" font-size="12" font-weight="600" text-anchor="middle">Caddy</text>
+  <text x="180" y="196" fill="#888" font-size="10" text-anchor="middle">internal CA TLS</text>
+  <path d="M230,184 L258,184" stroke="#d4943a" stroke-width="2" fill="none" marker-end="url(#a2)"/>
+  <rect x="258" y="162" width="115" height="44" rx="7" fill="none" stroke="#777" stroke-width="1.5"/>
+  <text x="315" y="181" fill="#b0b0b0" font-size="12" font-weight="600" text-anchor="middle">oauth2-proxy</text>
+  <text x="315" y="196" fill="#888" font-size="10" text-anchor="middle">:4180 Pocket ID</text>
+  <path d="M373,184 L400,184" stroke="#d4943a" stroke-width="2" fill="none" marker-end="url(#a2)"/>
+  <rect x="400" y="162" width="90" height="44" rx="7" fill="none" stroke="#777" stroke-width="1.5"/>
+  <text x="445" y="181" fill="#b0b0b0" font-size="12" font-weight="600" text-anchor="middle">App</text>
+  <text x="445" y="196" fill="#888" font-size="10" text-anchor="middle">Gatus :3002</text>
+  <rect x="5" y="236" width="585" height="30" rx="6" fill="none" stroke="#666" stroke-width="1"/>
+  <text x="297" y="255" fill="#888" font-size="10" text-anchor="middle">10.99.0.1 — virtual IP on loopback, advertised as Tailscale subnet route, avoids :443 conflict with Funnel</text>
+</svg>

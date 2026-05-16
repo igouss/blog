@@ -2,7 +2,15 @@
 title: "elendal's blog"
 ---
 
-Writing about systems, tools, and the occasional rabbit hole.
+<div class="idx-intro idx-intro--letter">
+
+<div class="salutation">Dear Sir or Madam,</div>
+
+Herewith a running record of experiments in self-hosted infrastructure, agentic workflows, and engineering decisions made in the small hours. Each entry runs in production on a tailnet of three machines; what does not work is reported as plainly as what does. Read at leisure.
+
+<div class="idx-signature">— I. G.</div>
+
+</div>
 
 ## Articles
 - [Private DNS and a TLS gateway for .homelab domains](/articles/homelab-dns-gateway) — Unbound recursive resolver with a `.homelab` zone, Caddy's internal CA for TLS, a virtual IP to dodge Tailscale's port 443, and auto-registration via Quadlet lifecycle hooks.

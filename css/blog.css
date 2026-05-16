@@ -694,10 +694,77 @@ body[data-path="/articles/"] article > header h1 {
   line-height: 1.65;
   margin: 0 0 var(--space-3);
 }
+.about-letter .about-particulars {
+  width: auto;
+  margin: var(--space-4) 0;
+  border-collapse: collapse;
+  font-family: var(--face-roman);
+  font-size: 15px;
+}
+.about-letter .about-particulars th,
+.about-letter .about-particulars td {
+  border: 0;
+  background: transparent;
+  padding: var(--space-1) var(--space-3) var(--space-1) 0;
+  vertical-align: top;
+  text-align: left;
+}
+.about-letter .about-particulars th {
+  font-family: var(--face-engraved);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  font-weight: normal;
+  white-space: nowrap;
+  padding-right: var(--space-5);
+}
+.about-letter .about-particulars td {
+  color: var(--fg-1);
+  line-height: 1.5;
+}
+.about-letter .about-particulars tbody tr:hover td { background: transparent; }
 
 /* On the about page (data-path="/"), suppress the article header treatment
    and let the .about-body grid do the layout. */
 body[data-path="/"] article > header { display: none; }
+
+/* On the articles index, also suppress the H1 — the .idx-intro letter
+   replaces it. */
+body[data-path="/articles"] article > header,
+body[data-path="/articles/"] article > header,
+body[data-path="/blog"] article > header,
+body[data-path="/blog/"] article > header { display: none; }
+
+/* ==========================================================================
+   INDEX INTRO — letter form (Dear Sir or Madam, …)
+   ========================================================================== */
+.idx-intro--letter {
+  display: block;
+  margin: var(--space-4) 0 var(--space-5);
+}
+.idx-intro--letter .salutation {
+  font-family: var(--face-script);
+  font-size: 30px;
+  color: var(--fg-script);
+  line-height: 1.1;
+  margin: 0 0 var(--space-1);
+}
+.idx-intro--letter p {
+  font-family: var(--face-roman);
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 0 0 var(--space-2);
+  color: var(--fg-1);
+}
+.idx-signature {
+  font-family: var(--face-script);
+  font-size: 44px;
+  color: var(--fg-script);
+  line-height: 1;
+  text-align: right;
+  margin: var(--space-3) var(--space-5) 0 0;
+}
 
 /* ==========================================================================
    404 — Returned to Sender envelope

@@ -300,8 +300,11 @@ Answer: not most of them. Stopped + `systemctl --user mask`-ed (so they don't co
 | `studyforge` | Next.js dev server for a paused project |
 | `plannotator` | Old experiment |
 | `ollama` | Local LLM inference; not actively using this week |
+| `openvscode-server` | Browser VS Code; my local editor is already on fedora |
+| `portainer` | Container management UI; `podman` CLI is fine for the few moves I make |
+| `metube` | YouTube/Twitter downloader; not currently saving anything |
 
-What's still running on fedora: `copyparty`, `services` (dashboard), `gatus`, `ttyd`, `pocket-id` (OIDC), `restate` + `restate-ingress`, `openvscode-server`, `portainer`, `metube`. On oracle-arm: `adguard` + `unbound`.
+What's still running on fedora: `copyparty`, `services` (dashboard), `gatus`, `ttyd`, `pocket-id` (OIDC), `restate` + `restate-ingress`. On oracle-arm: `adguard` + `unbound`. Six services on fedora, two on oracle-arm — down from sixteen.
 
 Files stay in the repo, volumes stay on disk. `systemctl --user unmask <name>-pod.service && systemctl --user start <name>-pod.service` brings any of them back in seconds.
 

@@ -342,3 +342,16 @@ After that: DNS resolves, oauth2-proxy callbacks work, Caddy proxies route, ever
 What's still on fedora and *can't* easily move: `copyparty` (lots of files), `services` (the static dashboard hosted by the same Caddy that serves the blog), `ttyd` (terminal into the actual host), `restate` + `restate-ingress` (paired with Postgres state I haven't yet migrated). The `.homelab` Caddy gateway itself stays — moving Caddy is its own project.
 
 Six services on fedora, four on oracle-arm. The fedora list is now small enough that the homelab feels like it has a *primary residence* in the cloud and a *workshop* at home, rather than the other way around. That's the version I wanted.
+
+## Part 3: the dashboard caught up with reality
+
+The `services.html` dashboard has a Gatus status badge on each card — a small SVG embedded next to the service name showing UP/DOWN. After all the pruning + migrations, the dashboard had two cosmetic failures:
+
+- Six cards rendered **down** badges (Code, StudyForge, MeTube, pgweb, plus a couple others). Accurate, since the services were intentionally stopped — but a dashboard half-red is anxiety-inducing in a way "I deliberately turned that off three weeks ago" is not.
+- Two cards rendered **broken-image icons** (Pods, Forgejo). Their Gatus endpoint definitions had `enabled: false` set, so the badge URL returned 404 and the browser drew the broken-image glyph.
+
+The right fix wasn't to re-enable the probes or hide the cards — both alter information I want to keep. **The cards stay** (record of dormant infrastructure I might revive). **The badges go** for anything that isn't currently expected to be up. Result: four green badges (Blog, ttyd, AdGuard, Files), six naked cards, zero noise.
+
+Two-pass `sed` against the HTML to strip the `<img class="status-badge">` line from any card whose `card-name` is in the stopped set. Five-line script, ten-line diff, three-second visual win. The smallest change in this post and easily the most satisfying.
+
+This is the discipline I should remember next time: when a status indicator is showing what you already know, the indicator is the bug, not the status.

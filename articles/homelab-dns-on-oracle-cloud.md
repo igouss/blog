@@ -355,3 +355,38 @@ The right fix wasn't to re-enable the probes or hide the cards — both alter in
 Two-pass `sed` against the HTML to strip the `<img class="status-badge">` line from any card whose `card-name` is in the stopped set. Five-line script, ten-line diff, three-second visual win. The smallest change in this post and easily the most satisfying.
 
 This is the discipline I should remember next time: when a status indicator is showing what you already know, the indicator is the bug, not the status.
+
+## Part 4: the log sweep that turned into a security fix
+
+The cleanup hands me the question every homelab admin postpones: *now that the obvious chaos is gone, what's actually in the logs?* I asked.
+
+Per-container error filter on oracle-arm surfaced one real bug (gatus was still probing `adguard-dns.mist-walleye.ts.net`, the dead fedora hostname — same ghost as the Caddyfile entry from earlier; one-line URL fix) and seven probes for stopped services helpfully reporting *down* every 60 seconds. The latter I flipped to `enabled: false` — gatus skips them entirely, no badge URL, no log churn, easy to revive when the underlying service comes back.
+
+The interesting find was two warnings on **every** oauth2-proxy sidecar — five active instances across both hosts — that had been silently scrolling past for who knows how long:
+
+```
+WARNING: provider supports PKCE methods but you have not enabled one
+WARNING: --reverse-proxy is enabled but no --trusted-proxy-ip CIDRs were configured.
+        All connecting IPs are trusted to supply X-Forwarded-* headers by default
+        (0.0.0.0/0, ::/0).
+```
+
+Fix is two `Environment=` lines per container:
+
+```ini
+Environment=OAUTH2_PROXY_CODE_CHALLENGE_METHOD=S256
+Environment=OAUTH2_PROXY_TRUSTED_PROXY_IPS=127.0.0.1/32,100.64.0.0/10
+```
+
+PKCE-S256 protects the OIDC code exchange. The proxy-IP whitelist means a hypothetical attacker reaching oauth2-proxy can't spoof identity headers from outside the tailnet — `X-Forwarded-User` from a random source is now ignored, where before it was honored.
+
+Mandatory false start: my first attempt set `OAUTH2_PROXY_TRUSTED_IPS` (singular), which is a *different* feature — an auth-bypass allowlist. That immediately triggered a fresh warning about "mixing --trusted-ip with --reverse-proxy is a potential security vulnerability." Correct env var is `OAUTH2_PROXY_TRUSTED_PROXY_IPS` (plural; maps to `--trusted-proxy-ip`). Two oauth2-proxy flags that differ by *one word* and do opposite things. Worth the column-inch.
+
+Cost: ten file edits, two restarts per host, zero warnings remaining. Worth doing on day one of any new oauth2-proxy deployment; absolutely worth doing as soon as you catch them in a log sweep.
+
+## What I'll do differently next time
+
+The whole exercise reinforced two things:
+
+1. **Migrate the load-bearing services first, the rest later.** I had it backwards — moved DNS first (which gave me the *idea* but had limited blast-radius improvement), then realized auth + monitoring were where the real availability gap was. If I were doing this fresh, I'd move Pocket ID and Gatus on day one and treat DNS as the easy follow-on.
+2. **Read your own logs occasionally.** The PKCE/trusted-proxy warnings had been there for a year. Nothing was actively broken, so I didn't look. Both fixes are one-line config changes. The cost of *finding* them was scrolling through six containers of journal output; the cost of *fixing* them was a coffee break. Set a quarterly calendar reminder.

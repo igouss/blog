@@ -13,6 +13,7 @@ Herewith a running record of experiments in self-hosted infrastructure, agentic 
 </div>
 
 ## Articles
+- [Moving homelab DNS off my laptop: Oracle Cloud Free Tier ARM, and seven things that broke](/articles/homelab-dns-on-oracle-cloud) — four-day capacity lottery for an Always-Free ARM VM, server-to-server SSH ACL gap, Tailscale key-expiry time bomb, Podman 4.9 vs 5.x Quadlet differences, custom arm64 Unbound image, and a stale Split DNS rule that quietly broke `.homelab` resolution tailnet-wide.
 - [Private DNS and a TLS gateway for .homelab domains](/articles/homelab-dns-gateway) — Unbound recursive resolver with a `.homelab` zone, Caddy's internal CA for TLS, a virtual IP to dodge Tailscale's port 443, and auto-registration via Quadlet lifecycle hooks.
 - [Killing a 1892-line god function in GSD-2](/articles/gsd-auto-loop-refactor) — four-PR sequence dismantling the `autoLoop` god function: code smells, mechanical cleanup, behavioral tests, pipeline extraction, and module split.
 - [Automated PR reviews with Claude Code in a self-hosted Forgejo](/articles/claude-review-forgejo) — runners as rootless Podman pods with Tailscale sidecar, composite action injecting OAuth credentials, and five things that don't work.

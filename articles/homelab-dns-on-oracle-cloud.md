@@ -283,3 +283,28 @@ What it doesn't:
 - It does not move the actual services. Pocket ID, Forgejo, Postgres, everything else still lives on the laptop. The next step is off-host Postgres backups so a disk failure doesn't lose every repo and OIDC encryption key.
 
 Total work was about two hours of mechanical migration plus, as documented above, an assortment of footguns that took longer than the migration itself. Roughly the homelab experience in microcosm.
+
+## Coda: a probe revealed I was running things I'd forgotten about
+
+The day after the migration I ran a `curl` sweep of every `.homelab` name in the dashboard. Half were returning `502` — Caddy proxy entries existed but the upstream sidecar pods had been off for two weeks. The DNS migration was fine; the dashboard had been quietly broken since some unattended restart had stopped them.
+
+I restarted them one by one to verify they still worked. Then asked myself: which of these am I actually using this month?
+
+Answer: not most of them. Stopped + `systemctl --user mask`-ed (so they don't come back on the next `daemon-reload` — Quadlet auto-enables `.pod` files via `[Install] WantedBy=default.target`, and plain `disable` doesn't stick):
+
+| Service | Reason it's stopped |
+|---|---|
+| `forgejo` + its three runners | Using GitHub for the moment; runners were already masked from a previous prune |
+| `postgresql` | Sole consumer was `pgweb` |
+| `pgweb` | No active database use |
+| `studyforge` | Next.js dev server for a paused project |
+| `plannotator` | Old experiment |
+| `ollama` | Local LLM inference; not actively using this week |
+
+What's still running on fedora: `copyparty`, `services` (dashboard), `gatus`, `ttyd`, `pocket-id` (OIDC), `restate` + `restate-ingress`, `openvscode-server`, `portainer`, `metube`. On oracle-arm: `adguard` + `unbound`.
+
+Files stay in the repo, volumes stay on disk. `systemctl --user unmask <name>-pod.service && systemctl --user start <name>-pod.service` brings any of them back in seconds.
+
+The discipline is simple — **nothing runs that I don't need this week**. Cheap to revive when I do. Idle services are mostly attack surface and entropy in the dashboard.
+
+If your homelab has been running for more than a year, do the probe. You'll find at least two surprises.

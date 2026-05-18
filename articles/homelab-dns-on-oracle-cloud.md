@@ -311,3 +311,34 @@ Files stay in the repo, volumes stay on disk. `systemctl --user unmask <name>-po
 The discipline is simple — **nothing runs that I don't need this week**. Cheap to revive when I do. Idle services are mostly attack surface and entropy in the dashboard.
 
 If your homelab has been running for more than a year, do the probe. You'll find at least two surprises.
+
+## Part 2: moving the load-bearing services too
+
+With the dead weight off, the question for what remains is sharper: *which of these actively need to be reachable when fedora is down?* Two stand out:
+
+- **Pocket ID** — the OIDC provider behind every oauth2-proxy in the stack. If it's down, I can't log into anything. If it's down with fedora and I'm trying to *fix* fedora, I'm doubly locked out.
+- **Gatus** — the monitor. It's the thing that tells me fedora is down. Running on fedora was theatre.
+
+Both moved to oracle-arm, keeping the same tailnet hostnames (`auth.mist-walleye.ts.net` and `status.mist-walleye.ts.net`) so every oauth2-proxy redirect URI and Caddy `homelab_proxy` upstream stays valid with zero config changes.
+
+The mechanics:
+
+- **Pocket ID's SQLite data** (`pocket-id.db` + `uploads/`, ~4MB total) migrates cleanly via `podman volume export | scp | podman volume import`. The killer detail is `ENCRYPTION_KEY` in `~/.config/pocket-id/credentials.env` — without it the DB is encrypted gibberish. Copy that too. Set permissions to 600 on the destination.
+- **Gatus has no data** — `storage: type: memory` in `gatus.yaml`. Just config (which lives in the repo) and the Tailscale sidecar's state volume. Easiest possible migration.
+
+Then a gotcha that cost me twenty minutes:
+
+> Stopping the original fedora sidecar pod **does not free its hostname** in the Tailscale device directory. The device entry persists. When you bring up the replacement on oracle-arm with `--hostname=auth`, it gets `auth-1` instead. Same for `status`.
+
+I deleted the old fedora device entries via the API. The new oracle-arm sidecars still showed as `auth-1` and `status-1` because their tailscaled state volumes were already bound to those names at first registration. Fix:
+
+1. Delete the `auth-1` and `status-1` device entries via API (so the directory is fully clean).
+2. Wipe the sidecar state volumes (`podman volume rm gatus-ts-state pocket-id-ts-state`).
+3. Generate fresh single-use auth keys.
+4. Restart sidecars — they register from scratch into the now-empty hostname slots and land cleanly as `auth` and `status`.
+
+After that: DNS resolves, oauth2-proxy callbacks work, Caddy proxies route, every service still authenticates against `auth.mist-walleye.ts.net` — same URL, different cloud. The whole login chain now survives fedora dying.
+
+What's still on fedora and *can't* easily move: `copyparty` (lots of files), `services` (the static dashboard hosted by the same Caddy that serves the blog), `ttyd` (terminal into the actual host), `restate` + `restate-ingress` (paired with Postgres state I haven't yet migrated). The `.homelab` Caddy gateway itself stays — moving Caddy is its own project.
+
+Six services on fedora, four on oracle-arm. The fedora list is now small enough that the homelab feels like it has a *primary residence* in the cloud and a *workshop* at home, rather than the other way around. That's the version I wanted.
